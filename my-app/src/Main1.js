@@ -4,13 +4,15 @@ import "./App.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 import SignedInNavBar from "./SignedInNavBar";
 
 import DatePicker from "./DatePicker";
 
+import NavBar from "./NavBar";
 import DropDownMain from "./DropDownMain";
+import graph from "./graph.png"; // with import
 
 export default function Main1() {
   return (
@@ -29,11 +31,16 @@ export default function Main1() {
         </Col>
 
         <Col>
-          <img
-            src="C:\Users\zj39lb\Desktop\energy\src\home.jpg"
-            width="100%"
-            height="80%"
-          />
+          <img src={graph} width="100%" height="50%" />
+          <p style={{ textAlign: "left" }}>Latest Update dd.mm.hh.mm</p>
+          <Row>
+            <Col>
+              <Button>Download Image</Button>
+            </Col>
+            <Col>
+              <Button>Download Data</Button>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>
