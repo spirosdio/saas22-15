@@ -28,6 +28,8 @@ export default function Main1() {
           <DatePicker></DatePicker>
 
           <DropDownMain></DropDownMain>
+
+          <Button>Refresh</Button>
         </Col>
 
         <Col>
