@@ -38,8 +38,8 @@ export default function Home() {
 
         <div
           style={{
-            minWidth: "100%",
-            borderTop: "2px solid #fff ",
+            minWidth: "70%",
+            borderTop: "2px solid #000",
             marginLeft: 20,
             marginRight: 20,
           }}
