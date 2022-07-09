@@ -1,6 +1,6 @@
 daily 
     duration: 20 minutes max 
-    time:     11:30
+    time:     12:00
 
 adies
     xristos : simera & avrio 
