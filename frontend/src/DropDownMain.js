@@ -28,17 +28,27 @@ export default function DropDownMain() {
         id="dropdown-menu-align-right"
         onSelect={handleSelect}
       >
-        <Dropdown.Item eventKey="1">Actual Total Food</Dropdown.Item>
+        <Dropdown.Item eventKey="Actual Total Food">
+          Actual Total Food
+        </Dropdown.Item>
 
-        <Dropdown.Item eventKey="2">Cross Border Flows</Dropdown.Item>
+        <Dropdown.Item eventKey="Cross Border Flows">
+          Cross Border Flows
+        </Dropdown.Item>
 
-        <Dropdown.Item eventKey="3">Generation Per Type</Dropdown.Item>
+        <Dropdown.Item eventKey="Generation Per Type">
+          Generation Per Type
+        </Dropdown.Item>
       </DropdownButton>
 
       <DropDownCountries></DropDownCountries>
-      {value == 2 ? <DropDownCountries></DropDownCountries> : " "}
+      {value == "Cross Border Flows" ? (
+        <DropDownCountries></DropDownCountries>
+      ) : (
+        " "
+      )}
 
-      {value == 3 ? <DropDownGT></DropDownGT> : " "}
+      {value == "Generation Per Type" ? <DropDownGT></DropDownGT> : " "}
     </>
   );
 }

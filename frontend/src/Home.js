@@ -22,7 +22,12 @@ export default function Home() {
   return (
     <>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img
+          style={{ marginTop: "2%" }}
+          src={logo}
+          className="App-logo"
+          alt="logo"
+        />
 
         <h1>Energy Live 2022</h1>
 

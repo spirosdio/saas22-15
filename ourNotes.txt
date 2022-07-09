@@ -7,8 +7,3 @@ adies
     giannis : 0
     spiros  : 0
     kostas  : 0
-
-issues
-    sto github
-
-

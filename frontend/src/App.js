@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Main1 from "./Main1";
 
 import Home from "./Home";
+import Profile from "./Profile";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -25,6 +26,9 @@ function App() {
 
           <Route exact path="/main1">
             <Main1> </Main1>
+          </Route>
+          <Route exact path="/profile">
+            <Profile> </Profile>
           </Route>
         </Switch>
       </div>
