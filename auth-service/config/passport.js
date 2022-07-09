@@ -24,7 +24,7 @@ async (/*request,*/ accessToken, refreshToken, profile, done) => {
     let user = await User.findOne({ googleId: profile.id })
 
     if (user) {
-      done(null, user)
+      done(null, user);
     } else {
       user = await User.create(newUser)
       done(null, user)
