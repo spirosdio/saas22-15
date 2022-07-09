@@ -1,0 +1,14 @@
+daily 
+    duration: 20 minutes max 
+    time:     11:30
+
+adies
+    xristos : simera & avrio 
+    giannis : 0
+    spiros  : 0
+    kostas  : 0
+
+issues
+    sto github
+
+
