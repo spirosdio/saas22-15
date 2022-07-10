@@ -38,7 +38,7 @@ export default function Main1() {
           </Button>
         </Col>
 
-        <Col className="maincolumn" style={{ backgroundColor: "red" }}>
+        <Col className="maincolumn" style={{ backgroundColor: "" }}>
           these come from the json file
           <Row>
             <Col>

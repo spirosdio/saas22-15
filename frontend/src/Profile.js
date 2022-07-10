@@ -44,7 +44,7 @@ export default function Profile() {
             <Form.Control type="email" placeholder="Last Login" />
             <Row>
               <Col>
-                <p>Days left {daysLeft}</p>
+                <p>Days left: {daysLeft}</p>
               </Col>
               <Col>
                 <DropdownButton
