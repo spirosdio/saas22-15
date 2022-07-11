@@ -18,12 +18,12 @@ async function polish_data(data, callback) {
 
 router.get('/:dateFrom&:country', (req, res) => {
     var dateFrom = req.params.dateFrom;
-    dateFrom = dateFrom + "T00:00:00.000Z";
+    dateFrom = dateFrom;
     dateFrom = new Date(dateFrom);
     const country = req.params.country;
     const models = require('../models/ATL_data');
     const model = models.filter(model => model.collection.name === country)[0];
-    model.find({ DateTime: { $gte: dateFrom } }, function(err, data) {
+    model.find({ DateTime: { $gte: dateFrom, $lt: new Date("2022-01-04") } }, function(err, data) {
         if (err) {
             console.log(err);
             res.status(500).json(err);
