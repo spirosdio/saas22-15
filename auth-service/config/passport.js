@@ -18,8 +18,10 @@ async (accessToken, refreshToken, profile, done) => {
     firstName: profile.name.givenName,
     lastName: profile.name.familyName,
     image: profile.photos[0].value,
+    email: profile.emails[0].value,
   }
-
+ 
+ 
   try {
      let user = await User.findOne({ googleId: profile.id })
 

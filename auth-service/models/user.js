@@ -4,7 +4,7 @@ const creatDate = new Date ();
 const expDate = new Date ();
 expDate.setDate(creatDate.getDate() + 30);
 let subDays = 30;
-let daysleft = expDate.getUTCDay() - creatDate.getUTCDay() +30;
+let daysleft = expDate.getUTCDay() - creatDate.getUTCDay() + 29;
 
 const UserSchema = new mongoose.Schema({
   googleId: {
@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema({
   },
   image: {
     type: String,
+  },
+  email: {
+    type: String,
+    required: false,
   },
   createdAt: {
     type: Date,

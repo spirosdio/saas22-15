@@ -7,6 +7,7 @@ const dotenv = require('dotenv')
 const passport = require('passport');
 const connectDB = require('./config/database')
 const MongoStore = require('connect-mongo');
+const cookieParser = require("cookie-parser");
 
 dotenv.config({path: './config/config.env'})
 
@@ -42,6 +43,7 @@ app.use(
     store: MongoStore.create({mongoUrl: process.env.MONGO_URI,})
   })
 );
+//app.use(cookieParser("keyboard cat"));
 app.use(bodyParser.json());
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
@@ -51,7 +53,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/auth", require("./routes/auth"));
-
 
 /*
 app.get('/', (req, res) => {
