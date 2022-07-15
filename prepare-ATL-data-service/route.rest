@@ -1,0 +1,5 @@
+GET http://localhost:3001/2022_01_02_01_ActualTotalLoad6.1.A.csv
+
+###
+
+GET http://localhost:3001/ATL/2022-01-01&ALCTY
