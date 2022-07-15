@@ -13,13 +13,7 @@ db.once("open", () => console.log("Connected to MongoDB"));
 
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:3000", // allow to server to accept request from different origin
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true, // allow session cookie from browser to pass through
-  })
-);
+app.use(cors());
 
 const ATLDataRouter = require("./routes/prepare_ATL_data");
 const ATLDataApiRouter = require("./routes/ATL_api");

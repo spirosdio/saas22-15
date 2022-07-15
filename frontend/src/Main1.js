@@ -221,30 +221,6 @@ export default function Main1() {
 
 function SignedInNavBar() {
   const [name, setName] = useState("");
-  const myUrl = "http://localhost:3020/";
-  const otherUrl = "https://jsonplaceholder.typicode.com/posts";
-
-  const [myTime, setmyTime] = useState([]);
-
-  const getmyTime = () => {
-    axios
-      .get(myUrl)
-      .then((res) => {
-        setmyTime(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log("finally");
-      });
-  };
-
-  useEffect(() => {
-    getmyTime();
-  }, []);
-
-  console.log(myTime);
 
   const getName = () => {
     axios({
@@ -268,7 +244,7 @@ function SignedInNavBar() {
           <Navbar.Toggle />
 
           <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>Time Is: {myTime}</Navbar.Text>
+            <Navbar.Text>Datetime Is: </Navbar.Text>
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
