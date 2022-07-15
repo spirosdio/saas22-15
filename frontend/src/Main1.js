@@ -8,6 +8,9 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+const ATL = "Actual Total Load";
+const AGPT = "Agregate generation per type";
+const PF = "Physical Flows";
 
 export default function Main1() {
   let status = "Not Live";
@@ -16,17 +19,7 @@ export default function Main1() {
   let Country = "Country";
   let Param2 = "Param2";
 
-  //const [data, setData] = useState("");
   const [value, setValue] = useState("");
-  /*
-
-    axios
-     .get("http://localhost:5000/auth/user",  { withCredentials: true })
-     .then((response) => {
-        console.log(response);
-        const user=response.data;
-     });
-     */
 
   const getUser = () => {
     axios({
@@ -44,7 +37,31 @@ export default function Main1() {
   useEffect(() => {
     getUser();
   }, []);
+  const [dateFrom, setDateFrom] = useState("2022-01-01T00:08");
+  const [country, setCountry] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [param2, setParam2] = useState("");
+  const displayInfo = () => {
+    console.log(country);
+    console.log(quantity);
+    console.log(param2);
+    console.log(dateFrom);
+  };
 
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json"
+      )
+
+      .then((res) => setData(res.data))
+
+      .catch((err) => console.log(err));
+  }, []);
+
+  const countries = [...new Set(data.map((item) => item.country))];
   return (
     <Container style={{}}>
       <Row>
@@ -54,23 +71,90 @@ export default function Main1() {
       </Row>
 
       <Row>
-        <Col xs={3} style={{ backgroundColor: "gray" }}>
-          <Form.Group>
-            <Form.Label>Select Date</Form.Label>
+        <Col className="leftRow" xs={4} style={{ backgroundColor: "gray" }}>
+          <label>Date From</label>
+          <input
+            type={"datetime-local"}
+            onChange={(event) => {
+              setDateFrom(event.target.value);
+            }}
+          ></input>
+          <label>Country</label>
 
-            <Form.Control type="date" placeholder="Date" />
-          </Form.Group>
-
-          <DropDownMain></DropDownMain>
-
-          <Button
-            className="refresh"
-            onClick={() => {
-              console.log("love and peace");
+          <select
+            onChange={(event) => {
+              setCountry(event.target.value);
             }}
           >
-            Refresh
-          </Button>
+            <option value="" selected></option>
+            {countries.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+
+          <p></p>
+          <label>Quantity</label>
+          <select
+            onChange={(event) => {
+              setQuantity(event.target.value);
+
+              setParam2("");
+
+              console.log(
+                event.target.value,
+                param2,
+                "quantity has changes and now "
+              );
+              if (event.target.value === AGPT) {
+              }
+              if (event.target.value === PF) {
+              }
+            }}
+          >
+            <option key="" selected></option>
+            <option key={ATL}>{ATL}</option>
+            <option key={AGPT}>{AGPT}</option>
+            <option key={PF}>{PF}</option>
+          </select>
+
+          <p></p>
+          {quantity === AGPT ? (
+            <>
+              <label>Generation Type</label>
+              <input
+                type="text"
+                onChange={(event) => {
+                  setParam2(event.target.value);
+                }}
+              ></input>
+            </>
+          ) : (
+            ""
+          )}
+          {quantity === PF ? (
+            <>
+              <label>Second Country</label>
+
+              <select
+                onChange={(event) => {
+                  setParam2(event.target.value);
+                }}
+              >
+                <option value="" selected></option>
+                {countries.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </>
+          ) : (
+            " "
+          )}
+          <p></p>
+          <button onClick={displayInfo}>Refresh</button>
         </Col>
 
         <Col className="maincolumn" style={{ backgroundColor: "red" }}>
@@ -175,98 +259,5 @@ function SignedInNavBar() {
         </Container>
       </Navbar>
     </>
-  );
-}
-
-function DropDownMain() {
-  const [value, setValue] = useState("");
-
-  const handleSelect = (e) => {
-    setValue(e);
-  };
-
-  return (
-    <>
-      <label> Quantity </label>
-      <DropdownButton
-        className="d-grid gap-2"
-        variant="light"
-        title={value}
-        id="dropdown-menu-align-right"
-        onSelect={handleSelect}
-      >
-        <Dropdown.Item eventKey="Actual Total Food">
-          Actual Total Food
-        </Dropdown.Item>
-
-        <Dropdown.Item eventKey="Cross Border Flows">
-          Cross Border Flows
-        </Dropdown.Item>
-
-        <Dropdown.Item eventKey="Generation Per Type">
-          Generation Per Type
-        </Dropdown.Item>
-      </DropdownButton>
-      <DropDownCountries></DropDownCountries>
-      {value == "Cross Border Flows" ? (
-        <DropDownCountries></DropDownCountries>
-      ) : (
-        " "
-      )}
-      {value == "Generation Per Type" ? <DropDownGT></DropDownGT> : " "}
-    </>
-  );
-}
-
-function DropDownGT() {
-  return (
-    <>
-      <label> Generation Type </label>
-
-      <Form.Select aria-label="Default select example">
-        <option value="" selected></option>
-
-        <option value="1">Natural Gas 1</option>
-
-        <option value="2">Natural Gas 2</option>
-
-        <option value="3">Natural Gas 3</option>
-      </Form.Select>
-    </>
-  );
-}
-
-function DropDownCountries() {
-  const [data, setData] = useState([]);
-
-  const [country, setCountry] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(
-        "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json"
-      )
-
-      .then((res) => setData(res.data))
-
-      .catch((err) => console.log(err));
-  }, []);
-
-  const countries = [...new Set(data.map((item) => item.country))];
-
-  return (
-    <div>
-      <label> Country </label>
-
-      <Form.Select>
-        <option value="" selected></option>
-
-        {countries.map((item) => (
-          <option key={item} value={item}>
-            {item}
-          </option>
-        ))}
-      </Form.Select>
-    </div>
   );
 }
