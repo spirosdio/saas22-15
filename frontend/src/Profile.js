@@ -10,7 +10,7 @@ import "./App.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { ListGroup } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import { useHistory } from "react-router-dom";
 import { Col } from "react-bootstrap";
@@ -30,8 +30,6 @@ export default function Profile() {
   const [email, setEmail] = useState("");
   const [daysleft, setDaysLeft] = useState("");
   const [lastLogin, setLastLogin] = useState("");
-
-  
 
   const handleSelect = (e) => {
     setValue(e);
@@ -65,23 +63,36 @@ export default function Profile() {
     getUser();
   }, []);
 
-  const date = lastLogin.slice(0,10); //set last login date
-  const time = lastLogin.slice(11,19); //set last login time
-  const dateTime = date + " , " +time;
+  const date = lastLogin.slice(0, 10); //set last login date
+  const time = lastLogin.slice(11, 19); //set last login time
+  const dateTime = date + " , " + time;
   return (
     <>
       <header className="App-header">
         <h1>Energy Live 2022</h1>
+
+        <Row>
+          <Col style={{ backgroundColor: "grey" }}>First Name</Col>
+          <Col>{firstName}</Col>
+        </Row>
+        <Row>
+          <Col style={{ backgroundColor: "grey" }}>Last Name</Col>
+          <Col>{lastName}</Col>
+        </Row>
+        <Row>
+          <Col style={{ backgroundColor: "grey" }}>Email address</Col>
+          <Col>{email}</Col>
+        </Row>
+        <Row>
+          <Col style={{ backgroundColor: "grey" }}>Last Login</Col>
+          <Col>{lastLogin}</Col>
+        </Row>
+        <Row>
+          <Col></Col>
+          <Col></Col>
+        </Row>
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label style={{ marginTop: "20px" }}>First Name</Form.Label>
-            <Form.Control type="email" placeholder={firstName} />
-            <Form.Label style={{ marginTop: "20px" }}>Last Name</Form.Label>
-            <Form.Control type="email" placeholder={lastName} />
-            <Form.Label style={{ marginTop: "20px" }}>Email address</Form.Label>
-            <Form.Control type="email" placeholder={email} />
-            <Form.Label style={{ marginTop: "20px" }}>Last Login</Form.Label>
-            <Form.Control type="email" placeholder={dateTime} />
             <Row>
               <Col>
                 <p>Days left: {daysleft}</p>
