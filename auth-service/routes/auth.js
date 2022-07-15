@@ -26,7 +26,7 @@ router.get("/user", (req, res) => {
     res.json(req.user);
 });
 
-router.put("/extend", (req, res) => {
+router.post("/extend", (req, res) => {
     console.log(req.body);
 });
 

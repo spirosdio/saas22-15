@@ -4,12 +4,10 @@ import logo from "./logo.png";
 
 import "./App.css";
 
+import { Navbar, Container, Nav } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import NavBar from "./NavBar";
-
 import { useHistory } from "react-router-dom";
 
 export default function Home() {
@@ -30,7 +28,7 @@ export default function Home() {
         />
 
         <h1>Energy Live 2022</h1>
-        
+
         <Button
           href="http://localhost:5000/auth/google"
           style={{ margin: "10vh" }}
@@ -38,7 +36,6 @@ export default function Home() {
           size="lg"
           active
         >
-
           Sign in with Google
         </Button>
 
@@ -50,8 +47,34 @@ export default function Home() {
             marginRight: 20,
           }}
         ></div>
+        <>
+          <Navbar style={{ color: "black", margin: "5vh" }}>
+            <Container className="navigationBar">
+              <Nav className="me-auto">
+                <Nav.Link
+                  style={{ color: "black", margin: "5vh" }}
+                  href="/About"
+                >
+                  About
+                </Nav.Link>
 
-        <NavBar></NavBar>
+                <Nav.Link
+                  style={{ color: "black", margin: "5vh" }}
+                  href="/Plans"
+                >
+                  Plans
+                </Nav.Link>
+
+                <Nav.Link
+                  style={{ color: "black", margin: "5vh" }}
+                  href="/Legal"
+                >
+                  Legal
+                </Nav.Link>
+              </Nav>
+            </Container>
+          </Navbar>
+        </>
       </header>
     </>
   );

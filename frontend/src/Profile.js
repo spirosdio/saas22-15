@@ -11,7 +11,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import NavBar from "./NavBar";
 import Row from "react-bootstrap/Row";
 import { useHistory } from "react-router-dom";
 import { Col } from "react-bootstrap";
@@ -26,10 +25,13 @@ export default function Profile() {
   const [plan, setPlan] = useState("");
   const [data, setData] = useState(null);
 
-  const [firstName, setFirstName] =useState("");
-  const [lastName, setLastName] =useState("");
-  const [email, setEmail] =useState("");
-  const [daysleft, setDaysLeft] =useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [daysleft, setDaysLeft] = useState("");
+  const [lastLogin, setLastLogin] = useState("");
+
+  
 
   const handleSelect = (e) => {
     setValue(e);
@@ -56,10 +58,16 @@ export default function Profile() {
       setLastName(res.data.lastName);
       setEmail(res.data.email);
       setDaysLeft(res.data.daysleft);
+      setLastLogin(res.data.createdAt);
     });
   };
-  useEffect(() => {getUser()},[]);
+  useEffect(() => {
+    getUser();
+  }, []);
 
+  const date = lastLogin.slice(0,10); //set last login date
+  const time = lastLogin.slice(11,19); //set last login time
+  const dateTime = date + " , " +time;
   return (
     <>
       <header className="App-header">
@@ -73,7 +81,7 @@ export default function Profile() {
             <Form.Label style={{ marginTop: "20px" }}>Email address</Form.Label>
             <Form.Control type="email" placeholder={email} />
             <Form.Label style={{ marginTop: "20px" }}>Last Login</Form.Label>
-            <Form.Control type="email" placeholder="Last Login" />
+            <Form.Control type="email" placeholder={dateTime} />
             <Row>
               <Col>
                 <p>Days left: {daysleft}</p>
@@ -102,7 +110,6 @@ export default function Profile() {
             type="submit"
             style={{ marginRight: "40px" }}
             onClick={plann}
-
           >
             Extend
           </Button>
