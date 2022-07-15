@@ -234,7 +234,27 @@ function SignedInNavBar() {
   useEffect(() => {
     getName();
   }, []);
+  const myUrl = "http://localhost:3020/";
 
+  const [myTime, setmyTime] = useState([]);
+
+  const getmyTime = () => {
+    axios
+      .get(myUrl)
+      .then((res) => {
+        setmyTime(res.data.date);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        console.log("finally");
+      });
+  };
+
+  useEffect(() => {
+    getmyTime();
+  }, []);
   return (
     <>
       <Navbar>
@@ -244,7 +264,7 @@ function SignedInNavBar() {
           <Navbar.Toggle />
 
           <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>Datetime Is: </Navbar.Text>
+            <Navbar.Text>Datetime Is: {myTime}:00 </Navbar.Text>
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
