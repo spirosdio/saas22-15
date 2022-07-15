@@ -73,7 +73,7 @@ export default function Profile() {
             <Form.Control type="email" placeholder={lastName} />
             <Form.Label style={{ marginTop: "20px" }}>Email address</Form.Label>
             <Form.Control type="email" placeholder={email} />
-            <Form.Label style={{ marginTop: "20px" }}>Last Login</Form.Label>
+            <Form.Label style={{ marginTop: "20px" }}>Created At</Form.Label>
             <Form.Control type="email" placeholder="Last Login" />
             <Row>
               <Col>
