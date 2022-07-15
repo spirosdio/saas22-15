@@ -29,6 +29,9 @@ export default function Profile() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [daysleft, setDaysLeft] = useState("");
+  const [lastLogin, setLastLogin] = useState("");
+
+  
 
   const handleSelect = (e) => {
     setValue(e);
@@ -55,12 +58,16 @@ export default function Profile() {
       setLastName(res.data.lastName);
       setEmail(res.data.email);
       setDaysLeft(res.data.daysleft);
+      setLastLogin(res.data.createdAt);
     });
   };
   useEffect(() => {
     getUser();
   }, []);
 
+  const date = lastLogin.slice(0,10); //set last login date
+  const time = lastLogin.slice(11,19); //set last login time
+  const dateTime = date + " , " +time;
   return (
     <>
       <header className="App-header">
@@ -73,8 +80,8 @@ export default function Profile() {
             <Form.Control type="email" placeholder={lastName} />
             <Form.Label style={{ marginTop: "20px" }}>Email address</Form.Label>
             <Form.Control type="email" placeholder={email} />
-            <Form.Label style={{ marginTop: "20px" }}>Created At</Form.Label>
-            <Form.Control type="email" placeholder="Last Login" />
+            <Form.Label style={{ marginTop: "20px" }}>Last Login</Form.Label>
+            <Form.Control type="email" placeholder={dateTime} />
             <Row>
               <Col>
                 <p>Days left: {daysleft}</p>
