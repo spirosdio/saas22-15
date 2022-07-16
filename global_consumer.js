@@ -3,7 +3,7 @@ const Kafka =  require('node-rdkafka');
 
 const consumer = Kafka.KafkaConsumer({
     'group.id': 'kafka',
-    'metadata.broker.list': '10.28.241.80:9092',
+    'metadata.broker.list': 'localhost:9092',
     'max.partition.fetch.bytes': '104857600',
 },
 {}, {});

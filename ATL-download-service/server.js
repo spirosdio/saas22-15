@@ -17,7 +17,7 @@ setInterval(() => {
 }, 500);
 
 const stream = Kafka.Producer.createWriteStream({
-    'metadata.broker.list': '10.28.241.80:9092',
+    'metadata.broker.list': 'localhost:9092',
     'message.max.bytes': '104857600'
 },{}, {topic: 'test'});
 
@@ -64,7 +64,7 @@ function queueMessage(){
         if (response.statusCode === 200) {
             console.log("File: " + filename + " downloaded successfully.");
             csvToArray(path, function(data) {
-                //console.log(data);
+                console.log(data);
 
                 stream.write(Buffer.from(JSON.stringify(data)), (err) => {
                     if (err) {

@@ -1,23 +1,35 @@
-version: "3"
+version: "3.8"
+
 services:
   zookeeper:
     container_name: zookeeper
-    image: 'bitnami/zookeeper:latest'
     ports:
-      - '2181:2181'
+      - "2181:2181"
+    image: "bitnami/zookeeper:3.8"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+
   kafka:
-    image: 'bitnami/kafka:latest'
-    container_name: 'kafka'
+    container_name: kafka
     ports:
-      - '9092:9092'
+     - "9092:9092"
+    image: "bitnami/kafka:3.2"
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_LISTENERS=PLAINTEXT://:9092
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_SOCKET_SEND_BUFFER_BYTES=104857600
+      - KAFKA_CFG_SOCKET_RECEIVE_BUFFER_BYTES=104857600
+      - KAFKA_CFG_SOCKET_REQUEST_MAX_BYTES=104857600
+      - KAFKA_CFG_LOG_RETENTION_MINUTES=1
+      - KAFKA_CFG_LOG_SEGMENT_BYTES=104857600
+      - KAFKA_CFG_LOG_RETENTION_CHECK_INTERVAL_MS=10000
+      - KAFKA_CFG_DELETE_TOPIC_ENABLE=true
+      - KAFKA_CFG_REPLICA_FETCH_MAX_BYTES=104857600
+      - KAFKA_CFG_MAX_PARTITION_FETCH_BYTES=104857600
+      - KAFKA_CFG_MAX_REQUEST_SIZE=104857600
 
     depends_on:
       - zookeeper
