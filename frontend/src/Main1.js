@@ -11,10 +11,12 @@ import Dropdown from "react-bootstrap/Dropdown";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import stockCharts from "highcharts/modules/stock";
-
+let globalTime = "";
 const ATL = "Actual Total Load";
 const AGPT = "Agregate generation per type";
 const PF = "Physical Flows";
+const myUrl = "http://localhost:3020/";
+
 function DateStringArrayToEpoch(mySeries) {
   for (let i = 0; i < mySeries.length; i++) {
     mySeries[i].DateTime = new Date(mySeries[i].DateTime).getTime();
@@ -51,25 +53,6 @@ export default function Main1() {
   let Quantity = "Quantity";
   let Country = "Country";
   let Param2 = "Param2";
-
-  const [value, setValue] = useState("");
-
-  const getUser = () => {
-    axios({
-      method: "GET",
-      withCredentials: true,
-      url: "http://localhost:5000/auth/user",
-    }).then((res) => {
-      console.log(res);
-      //setData(res.user);
-      setValue(res.data.daysleft);
-      console.log(res.data);
-    });
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
 
   const [dateFrom, setDateFrom] = useState("2022-01-01T00:08");
   const [country, setCountry] = useState("");
@@ -287,11 +270,8 @@ export default function Main1() {
                 Service Status: {status}
               </div>
             </Col>
-
             <Col>
-              <div style={{ color: "black" }} href="/Legal">
-                Days Left: {value}
-              </div>
+              <DaysLeft></DaysLeft>
             </Col>
 
             <Col>
@@ -315,7 +295,6 @@ function SignedInNavBar() {
   const [name, setName] = useState("");
   const [id, setId] = useState("");
   const [daysleftt, setDaysLeft] = useState("");
-
   const getName = () => {
     axios({
       method: "GET",
@@ -327,41 +306,10 @@ function SignedInNavBar() {
       setDaysLeft(res.data.daysleft);
     });
   };
+
   useEffect(() => {
     getName();
   }, []);
-  const myUrl = "http://localhost:3020/";
-
-  const [myTime, setmyTime] = useState([]);
-
-  const getmyTime = () => {
-    axios
-      .get(myUrl)
-      .then((res) => {
-        setmyTime(res.data.date);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log("finally");
-      });
-  };
-
-  useEffect(() => {
-    getmyTime();
-  }, []);
-
-  const manipulateTime = myTime.slice(11, 13);
-
-  if (manipulateTime == "00") {
-    let daysLeftNew = parseInt(daysleftt) - 1;
-    const data1 = { daysleft: daysLeftNew };
-    const update = () => {
-      axios.patch(`http://localhost:5000/auth/extend/${id}`, data1);
-    };
-    update();
-  }
 
   return (
     <>
@@ -372,7 +320,7 @@ function SignedInNavBar() {
           <Navbar.Toggle />
 
           <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>Datetime Is: {myTime}:00 </Navbar.Text>
+            <ExampleCounter />
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
@@ -390,5 +338,93 @@ function SignedInNavBar() {
         </Container>
       </Navbar>
     </>
+  );
+}
+
+function ExampleCounter() {
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      axios
+        .get(myUrl)
+        .then((res) => {
+          setCounter(res.data.date);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {});
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="App">
+      <Navbar.Text>Datetime Is: {counter}:00 </Navbar.Text>
+    </div>
+  );
+}
+function DaysLeft() {
+  const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [daysleftt, setDaysLeft] = useState("");
+  const [myTime, setmyTime] = useState([]);
+
+  const getName = () => {
+    axios({
+      method: "GET",
+      withCredentials: true,
+      url: "http://localhost:5000/auth/user",
+    }).then((res) => {
+      setName(res.data.displayName);
+      setId(res.data._id);
+      setDaysLeft(res.data.daysleft);
+    });
+  };
+  const getTime = () => {
+    axios
+      .get(myUrl)
+      .then((res) => {
+        setmyTime(res.data.date);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
+
+  useEffect(() => {
+    const interval2 = setInterval(() => {
+      getName();
+    }, 1000);
+
+    return () => clearInterval(interval2);
+  }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getTime();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const manipulateTime = myTime.slice(11, 13);
+  if (manipulateTime == "00") {
+    console.log(manipulateTime, "is divisible by 4", daysleftt, "days left");
+    let daysLeftNew = parseInt(daysleftt) - 1;
+    console.log(daysLeftNew, "newdays left");
+    const data1 = { daysleft: daysLeftNew };
+    const update = () => {
+      axios.patch(`http://localhost:5000/auth/extend/${id}`, data1);
+    };
+    update();
+  }
+
+  return (
+    <div className="App">
+      <Navbar.Text>DaysLeft: {daysleftt} </Navbar.Text>
+    </div>
   );
 }
