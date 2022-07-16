@@ -28,6 +28,23 @@ function ArrayOfObjectsToArrayOfArrays(mySeries) {
   }
   return mySeriesArray;
 }
+function download(filename, text) {
+  var pom = document.createElement("a");
+  pom.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  pom.setAttribute("download", filename);
+
+  if (document.createEvent) {
+    var event = document.createEvent("MouseEvents");
+    event.initEvent("click", true, true);
+    pom.dispatchEvent(event);
+  } else {
+    pom.click();
+  }
+}
+
 export default function Main1() {
   let status = "Not Live";
   let daysLeft = 32;
@@ -89,7 +106,7 @@ export default function Main1() {
   useEffect(() => {
     getmySeries();
   }, []);
-
+  var mySeriesJson = JSON.stringify(mySeries);
   mySeries = DateStringArrayToEpoch(mySeries);
 
   mySeries = ArrayOfObjectsToArrayOfArrays(mySeries);
@@ -117,7 +134,9 @@ export default function Main1() {
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  const download2 = (e) => {
+    download("data.json", mySeriesJson.toString());
+  };
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -250,7 +269,7 @@ export default function Main1() {
               <Button>Download Image</Button>
             </Col>
             <Col>
-              <Button>Download Data</Button>
+              <Button onClick={download2}>Download Data</Button>
             </Col>
           </Row>
           <div
