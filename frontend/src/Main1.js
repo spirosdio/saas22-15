@@ -8,10 +8,26 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts";
+import stockCharts from "highcharts/modules/stock";
+
 const ATL = "Actual Total Load";
 const AGPT = "Agregate generation per type";
 const PF = "Physical Flows";
-
+function DateStringArrayToEpoch(mySeries) {
+  for (let i = 0; i < mySeries.length; i++) {
+    mySeries[i].DateTime = new Date(mySeries[i].DateTime).getTime();
+  }
+  return mySeries;
+}
+function ArrayOfObjectsToArrayOfArrays(mySeries) {
+  let mySeriesArray = [];
+  for (let i = 0; i < mySeries.length; i++) {
+    mySeriesArray.push([mySeries[i].DateTime, mySeries[i].TotalLoadValue]);
+  }
+  return mySeriesArray;
+}
 export default function Main1() {
   let status = "Not Live";
   let daysLeft = 32;
@@ -37,6 +53,7 @@ export default function Main1() {
   useEffect(() => {
     getUser();
   }, []);
+
   const [dateFrom, setDateFrom] = useState("2022-01-01T00:08");
   const [country, setCountry] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -47,6 +64,59 @@ export default function Main1() {
     console.log(param2);
     console.log(dateFrom);
   };
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const otherUrl = "https://demo-live-data.highcharts.com/aapl-c.json";
+
+  const myUrl = "http://localhost:3001/ATL/2022-01-01&ALCTY";
+
+  var [mySeries, setmySeries] = useState([]);
+
+  const getmySeries = () => {
+    axios
+      .get(myUrl)
+      .then((res) => {
+        setmySeries(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        console.log("finally");
+      });
+  };
+
+  useEffect(() => {
+    getmySeries();
+  }, []);
+
+  mySeries = DateStringArrayToEpoch(mySeries);
+
+  mySeries = ArrayOfObjectsToArrayOfArrays(mySeries);
+  console.log(mySeries);
+
+  const myOptins = {
+    //Highcharts.stockChart('container', {
+    rangeSelector: {
+      selected: 1,
+    },
+
+    title: {
+      text: myUrl,
+    },
+
+    series: [
+      {
+        name: myUrl,
+        data: mySeries,
+        tooltip: {
+          valueDecimals: 2,
+        },
+      },
+    ],
+  };
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const [data, setData] = useState([]);
 
@@ -155,6 +225,7 @@ export default function Main1() {
           )}
           <p></p>
           <button onClick={displayInfo}>Refresh</button>
+          <button onClick={displayInfo}>fake refresh</button>
         </Col>
 
         <Col className="maincolumn" style={{ backgroundColor: "red" }}>
@@ -170,7 +241,9 @@ export default function Main1() {
               <div style={{ color: "black" }}>{Param2}</div>
             </Col>
           </Row>
-          <img src={graph} width="100%" height="50%" />
+          <div>
+            <HighchartsReact highcharts={Highcharts} options={myOptins} />
+          </div>
           <p style={{ textAlign: "left" }}>Latest Update dd.mm.hh.mm</p>
           <Row>
             <Col>
