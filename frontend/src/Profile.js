@@ -21,20 +21,40 @@ export default function Profile() {
   const coursesPage = () => {
     history.push("/main1");
   };
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(0);
   const [plan, setPlan] = useState("");
   const [data, setData] = useState(null);
 
+  const [id, setId] =useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [daysleft, setDaysLeft] = useState("");
+  const [daysleftt, setDaysLeft] = useState("");
   const [lastLogin, setLastLogin] = useState("");
 
   const handleSelect = (e) => {
     setValue(e);
   };
+  
+  
+  //console.log(updatedPlan);
 
+  /*
+  const plann = (id) => {
+    axios({
+      method: "PUT",
+      data: {
+        "daysleft" : updatedPlan,
+      },
+      withCredentials: true,
+      url: "http://localhost:5000/auth/extend/:id",
+    }).then((res) => console.log(res));
+  };
+  useEffect(() => {
+    plann(id);
+  }, []);
+  */
+  /*
   const plann = () => {
     axios({
       method: "POST",
@@ -45,13 +65,15 @@ export default function Profile() {
       url: "http://localhost:5000/auth/extend",
     }).then((res) => console.log(res));
   };
-
+  */
+  
   const getUser = () => {
     axios({
       method: "GET",
       withCredentials: true,
       url: "http://localhost:5000/auth/user",
     }).then((res) => {
+      setId(res.data._id);
       setFirstName(res.data.firstName);
       setLastName(res.data.lastName);
       setEmail(res.data.email);
@@ -62,6 +84,14 @@ export default function Profile() {
   useEffect(() => {
     getUser();
   }, []);
+  
+  
+  let updatedPlan = parseInt(value) + parseInt(daysleftt);
+  const data1 = { daysleft : updatedPlan};
+  const update = () =>{
+      axios.patch(`http://localhost:5000/auth/extend/${id}`,data1)
+  };
+  
 
   const date = lastLogin.slice(0, 10); //set last login date
   const time = lastLogin.slice(11, 19); //set last login time
@@ -85,7 +115,7 @@ export default function Profile() {
         </Row>
         <Row>
           <Col style={{ backgroundColor: "grey" }}>Last Login</Col>
-          <Col>{lastLogin}</Col>
+          <Col>{date}</Col>
         </Row>
         <Row>
           <Col></Col>
@@ -95,7 +125,7 @@ export default function Profile() {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Row>
               <Col>
-                <p>Days left: {daysleft}</p>
+                <p>Days left: {daysleftt}</p>
               </Col>
               <Col>
                 <DropdownButton
@@ -120,7 +150,7 @@ export default function Profile() {
             variant="primary"
             type="submit"
             style={{ marginRight: "40px" }}
-            onClick={plann}
+            onClick={update}
           >
             Extend
           </Button>

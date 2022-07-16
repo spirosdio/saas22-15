@@ -247,7 +247,7 @@ export default function Main1() {
           <button onClick={displayInfo}>fake refresh</button>
         </Col>
 
-        <Col className="maincolumn" style={{ backgroundColor: "red" }}>
+        <Col className="maincolumn" style={{ backgroundColor: "lime" }}>
           these come from the json file
           <Row>
             <Col>
@@ -313,6 +313,8 @@ export default function Main1() {
 
 function SignedInNavBar() {
   const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [daysleftt, setDaysLeft] = useState("");
 
   const getName = () => {
     axios({
@@ -321,6 +323,8 @@ function SignedInNavBar() {
       url: "http://localhost:5000/auth/user",
     }).then((res) => {
       setName(res.data.displayName);
+      setId(res.data._id);
+      setDaysLeft(res.data.daysleft);
     });
   };
   useEffect(() => {
@@ -347,6 +351,18 @@ function SignedInNavBar() {
   useEffect(() => {
     getmyTime();
   }, []);
+
+  const manipulateTime = myTime.slice(11, 13);
+
+  if (manipulateTime == "00") {
+    let daysLeftNew = parseInt(daysleftt) - 1;
+    const data1 = { daysleft: daysLeftNew };
+    const update = () => {
+      axios.patch(`http://localhost:5000/auth/extend/${id}`, data1);
+    };
+    update();
+  }
+
   return (
     <>
       <Navbar>
