@@ -19,7 +19,7 @@ setInterval(() => {
 const stream = Kafka.Producer.createWriteStream({
     'metadata.broker.list': 'localhost:9092',
     'message.max.bytes': '104857600'
-},{}, {topic: 'test'});
+},{}, {topic: 'ATL_new_data'});
 
 // a function that takes the path to a CSV file and returns a json object
 function csvToArray(csvFilePath, callback) {
@@ -64,7 +64,7 @@ function queueMessage(){
         if (response.statusCode === 200) {
             console.log("File: " + filename + " downloaded successfully.");
             csvToArray(path, function(data) {
-                console.log(data);
+                //console.log(data);
 
                 stream.write(Buffer.from(JSON.stringify(data)), (err) => {
                     if (err) {

@@ -12,7 +12,7 @@ consumer.connect();
 
 consumer.on('ready', function() {
     console.log('Consumer is ready');
-    consumer.subscribe(['test']);
+    consumer.subscribe(['ATL_new_data']);
     consumer.consume();
 }).on('event.error', function(err) {
     console.log('Error from consumer');
