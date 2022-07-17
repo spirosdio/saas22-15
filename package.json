@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "startFileServer": "node file-service/server.js",
-    "startATLDataServer": "node ATL-download-service/server.js",
-    "startPrepareATLDataServer": "node prepare-ATL-data-service/server.js",
-    "startMagicClockServer": "node magic-clock-service/server.js"
+    "start:MagicClock": "nodemon Magic_Clock_Service/server.js",
+    "start:ATL:DownloadService": "nodemon ATL_Download_Service/server.js",
+    "start:ATL:PrepareDataService": "nodemon ATL_Prepare_Data_Service/server.js",
+    "start:ATL:Middleware": "nodemon ATL_Middleware/server.js",
+    "start:AGPT:DownloadService": "nodemon AGPT_Download_Service/server.js",
+    "start:AGPT:PrepareDataService": "nodemon AGPT_Prepare_Data_Service/server.js",
+    "start:AGPT:Middleware": "nodemon AGPT_Middleware/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,11 +22,6 @@
     "bootstrap": "^5.1.3",
     "bootstrap-buttons": "0.0.25",
     "cors": "^2.8.5",
-    "csv": "^6.1.0",
-    "express": "^4.18.1",
-    "fs": "^0.0.1-security",
-    "http": "^0.0.1-security",
-    "mongoose": "^6.3.4",
     "node-fetch": "^3.2.8",
     "react": "^18.1.0",
     "react-bootstrap": "^2.4.0",
@@ -32,7 +30,15 @@
     "react-router-dom": "^5.3.3",
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "csv": "^6.1.0",
+    "express": "^4.18.1",
+    "fast-csv": "^4.3.6",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "jquery-csv": "^1.0.21",
+    "mongoose": "^6.3.4",
+    "node-rdkafka": "^2.13.0"
   },
   "devDependencies": {
     "dotenv": "^16.0.1",
