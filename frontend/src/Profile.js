@@ -89,7 +89,8 @@ export default function Profile() {
   let updatedPlan = parseInt(value) + parseInt(daysleftt);
   const data1 = { daysleft : updatedPlan};
   const update = () =>{
-      axios.patch(`http://localhost:5000/user/extend/${id}`,data1)
+    console.log(data1);
+      axios.patch(`http://localhost:5000/auth/extend/${id}`,data1)
   };
   
 
@@ -99,23 +100,23 @@ export default function Profile() {
   return (
     <>
       <header className="App-header">
-        <h1 style={{marginBottom: "10vh"}}>Energy Live 2022</h1>
+        <h1>Energy Live 2022</h1>
 
         <Row>
-          <Col className="button2" style={{ backgroundColor: "grey", width: '560px' , marginBottom: "2vh"}}>First Name:</Col>
-          <Col className="button2" style={{marginBottom: "2vh"}} >{firstName}</Col>
+          <Col style={{ backgroundColor: "grey" }}>First Name</Col>
+          <Col>{firstName}</Col>
         </Row>
         <Row>
-          <Col className="button2" style={{ backgroundColor: "grey", width: '502px' , marginBottom: "2vh"}}>Last Name:</Col>
-          <Col className="button2" style={{marginBottom: "2vh"}}>{lastName}</Col>
+          <Col style={{ backgroundColor: "grey" }}>Last Name</Col>
+          <Col>{lastName}</Col>
         </Row>
         <Row>
-          <Col className="button2" style={{ backgroundColor: "grey", width: '380px' , marginBottom: "2vh"}}>Email address:</Col>
-          <Col className="button2" style={{marginBottom: "2vh"}}>{email}</Col>
+          <Col style={{ backgroundColor: "grey" }}>Email address</Col>
+          <Col>{email}</Col>
         </Row>
         <Row>
-          <Col className="button2" style={{ backgroundColor: "grey", width: '334px', marginBottom: "2vh" }}>Last Login:</Col>
-          <Col className="button2" style={{marginBottom: "2vh"}}>Date: {date} Time:{time}</Col>
+          <Col style={{ backgroundColor: "grey" }}>Last Login</Col>
+          <Col>{date}</Col>
         </Row>
         <Row>
           <Col></Col>
@@ -124,7 +125,7 @@ export default function Profile() {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Row>
-              <Col className="button2" style={{ backgroundColor: "grey", width: '570px', marginBottom: "2vh" , marginRight: "30px"}}>
+              <Col>
                 <p>Days left: {daysleftt}</p>
               </Col>
               <Col>
@@ -134,7 +135,7 @@ export default function Profile() {
                   title={value}
                   id="dropdown-menu-align-right"
                   onSelect={handleSelect}
-                  style={{ marginTop: "5px", marginLeft: "0px" }}
+                  style={{ marginTop: "20px" }}
                 >
                   <Dropdown.Item eventKey="1">1 </Dropdown.Item>
                   <Dropdown.Item eventKey="5">5 </Dropdown.Item>
@@ -146,22 +147,22 @@ export default function Profile() {
             </Row>
           </Form.Group>
 
-          <button
-            className="button"
+          <Button
             variant="primary"
             type="submit"
-            style={{ marginRight: "40px" }}
             onClick={update}
+            style={{ marginRight: "40px" }}
+          
           >
             Extend
-          </button>
+          </Button>
 
-          <button variant="primary" type="cancel" className="button">
+          <Button variant="primary" type="cancel">
             Cancel
-          </button>
+          </Button>
         </Form>
 
-        <a className="button" href="/main1" style={{ marginTop: "30px" }}>
+        <a href="/main1" style={{ marginTop: "30px" }}>
           Back
         </a>
       </header>

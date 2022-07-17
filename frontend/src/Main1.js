@@ -9,7 +9,7 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import CreateURL from "./CreateURL";
 const myGlobalClockURL = "http://localhost:3020/";
-const myUrl = "http://localhost:3001/ATL/2022-01-01&ALCTY";
+const myUrl = "http://localhost:3001/2022-01-01&ALCTY";
 
 const status = "Active";
 function DateStringArrayToEpoch(mySeries) {
@@ -45,7 +45,7 @@ function download(filename, text) {
 export default function Main1() {
   let status = "Not Live";
   const [changingUrl, setChangingUrl] = useState(
-    "http://localhost:3001/ATL/2022-01-01&ALCTY"
+    "http://localhost:3001/2022-01-01&ALCTY"
   );
 
   const handleRefreshparent = (newUrl) => {
@@ -104,7 +104,7 @@ export default function Main1() {
     download("data.json", mySeriesJson.toString());
   };
 
-  const countries = [...new Set(data.map((item) => item.country))];
+  //const countries = [...new Set(data.map((item) => item.country))];
   return (
     <Container style={{}}>
       <Row>

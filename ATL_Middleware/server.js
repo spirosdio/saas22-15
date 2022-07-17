@@ -5,6 +5,10 @@ const Kafka = require('node-rdkafka');
 const app = express();
 app.use(express.json());
 
+const cors = require('cors')
+
+
+app.use(cors());
 
 var global_client_id = 0;
 var global_data = {};

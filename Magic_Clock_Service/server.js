@@ -6,7 +6,10 @@ const { exit } = require('process');
 const app = express()
 app.use(express.json())
 const router = express.Router()
+const cors = require('cors')
 
+
+app.use(cors());
 
 var interval = process.env.MAGIC_CLOCK_INTERVAL
 var dateString = process.env.MAGIC_CLOCK_STARTING_DATE
