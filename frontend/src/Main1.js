@@ -104,6 +104,7 @@ export default function Main1() {
     download("data.json", mySeriesJson.toString());
   };
 
+  const countries = [...new Set(data.map((item) => item.country))];
   return (
     <Container style={{}}>
       <Row>
@@ -154,7 +155,7 @@ export default function Main1() {
               borderTop: "2px solid #000",
               marginLeft: 20,
               marginRight: 20,
-              marginTop: 20,
+              marginTop: 60,
             }}
           ></div>
           <Bottomrow></Bottomrow>
@@ -196,7 +197,7 @@ function SignedInNavBar() {
     axios({
       method: "GET",
       withCredentials: true,
-      url: "http://localhost:5000/auth/user",
+      url: "http://localhost:5000/user/get-user",
     }).then((res) => {
       setName(res.data.displayName);
       setId(res.data._id);
@@ -210,9 +211,9 @@ function SignedInNavBar() {
 
   return (
     <>
-      <Navbar>
-        <Container>
-          <Navbar.Brand href="/main1">EnergyLive2022</Navbar.Brand>
+      <Navbar >
+        <Container className="navbar">
+          <Navbar.Brand href="/main1" style= {{fontSize : "23px"}}>EnergyLive2022</Navbar.Brand>
 
           <Navbar.Toggle />
 
@@ -271,7 +272,7 @@ function DaysLeft() {
     axios({
       method: "GET",
       withCredentials: true,
-      url: "http://localhost:5000/auth/user",
+      url: "http://localhost:5000/user/get-user",
     }).then((res) => {
       setName(res.data.displayName);
       setId(res.data._id);
@@ -314,7 +315,7 @@ function DaysLeft() {
     }
     const data1 = { daysleft: daysLeftNew };
     const update = () => {
-      axios.patch(`http://localhost:5000/auth/extend/${id}`, data1);
+      axios.patch(`http://localhost:5000/user/extend/${id}`, data1);
     };
     update();
   }

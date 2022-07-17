@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     axios({
      method: "GET",
      withCredentials: true,
-     url: "http://localhost:5000/auth/user",
+     url: "http://localhost:5000/user/get-user",
    }).then((res) => {
      setUser(res.data._id)
    });
