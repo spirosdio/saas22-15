@@ -102,19 +102,19 @@ export default function Profile() {
         <h1 style={{marginBottom: "10vh"}}>Energy Live 2022</h1>
 
         <Row>
-          <Col className="button2" style={{ backgroundColor: "grey", width: '555px' , marginBottom: "2vh"}}>First Name:</Col>
+          <Col className="button2" style={{ backgroundColor: "grey", width: '560px' , marginBottom: "2vh"}}>First Name:</Col>
           <Col className="button2" style={{marginBottom: "2vh"}} >{firstName}</Col>
         </Row>
         <Row>
-          <Col className="button2" style={{ backgroundColor: "grey", width: '605px' , marginBottom: "2vh"}}>Last Name:</Col>
+          <Col className="button2" style={{ backgroundColor: "grey", width: '502px' , marginBottom: "2vh"}}>Last Name:</Col>
           <Col className="button2" style={{marginBottom: "2vh"}}>{lastName}</Col>
         </Row>
         <Row>
-          <Col className="button2" style={{ backgroundColor: "grey", width: '412px' , marginBottom: "2vh"}}>Email address:</Col>
+          <Col className="button2" style={{ backgroundColor: "grey", width: '380px' , marginBottom: "2vh"}}>Email address:</Col>
           <Col className="button2" style={{marginBottom: "2vh"}}>{email}</Col>
         </Row>
         <Row>
-          <Col className="button2" style={{ backgroundColor: "grey", width: '320px', marginBottom: "2vh" }}>Last Login:</Col>
+          <Col className="button2" style={{ backgroundColor: "grey", width: '334px', marginBottom: "2vh" }}>Last Login:</Col>
           <Col className="button2" style={{marginBottom: "2vh"}}>Date: {date} Time:{time}</Col>
         </Row>
         <Row>
@@ -124,7 +124,7 @@ export default function Profile() {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Row>
-              <Col className="button2" style={{ backgroundColor: "grey", width: '557px', marginBottom: "2vh" , marginRight: "30px"}}>
+              <Col className="button2" style={{ backgroundColor: "grey", width: '570px', marginBottom: "2vh" , marginRight: "30px"}}>
                 <p>Days left: {daysleftt}</p>
               </Col>
               <Col>
