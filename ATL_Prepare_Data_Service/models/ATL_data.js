@@ -21,7 +21,7 @@ function csvToArray(csvFilePath, callback) {
     })
 }
 
-csvToArray("prepare-ATL-data-service/countries_data.csv", function(data) {
+csvToArray("ATL_Prepare_Data_Service/countries_data.csv", function(data) {
 
     let models = [];
 

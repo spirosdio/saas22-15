@@ -14,7 +14,7 @@ const Kafka =  require('node-rdkafka');
 
 var date = '';
 setInterval(() => {
-    http.get('http:localhost:3020/', (res) => {
+    http.get(process.env.MAGIC_CLOCK_SERVER_URL, (res) => {
         res.on('data', (chunk) => {
             date = JSON.parse(chunk.toString());
             date = date.date;

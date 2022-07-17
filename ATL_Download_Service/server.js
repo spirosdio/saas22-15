@@ -7,7 +7,7 @@ require('dotenv').config()
 
 var date = '';
 setInterval(() => {
-    http.get('http:localhost:3020/', (res) => {
+    http.get(process.env.MAGIC_CLOCK_SERVER_URL, (res) => {
         res.on('data', (chunk) => {
             date = JSON.parse(chunk.toString());
             date = date.date;
@@ -62,7 +62,8 @@ function csvToArray(csvFilePath, callback) {
 }
 
 function queueMessage(){
-    const path = '/media/chris/FroutaDrive/saasData/saas2022Data/' + 'ATL/' + date.replace('-', '_').replace('-', '_').replace('-', '_') + '_ActualTotalLoad6.1.A.csv';
+    const files_location = process.env.STATIC_FILE_FOLDER;
+    const path = files_location + 'ATL/' + date.replace('-', '_').replace('-', '_').replace('-', '_') + '_ActualTotalLoad6.1.A.csv';
 
     csvToArray(path, function(data) {
         //console.log(data);

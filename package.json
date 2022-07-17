@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "startFileServer": "node file-service/server.js",
-    "startATLDataServer": "node ATL-download-service/server.js",
-    "startPrepareATLDataServer": "node prepare-ATL-data-service/server.js",
-    "startMagicClockServer": "node magic-clock-service/server.js"
+    "start:MagicClock": "nodemon Magic_Clock_Service/server.js",
+    "start:ATL:DownloadService": "nodemon ATL_Download_Service/server.js",
+    "start:ATL:PrepareDataService": "nodemon ATL_Prepare_Data_Service/server.js",
+    "start:ATL:Middleware": "nodemon ATL_Middleware/server.js"
   },
   "author": "",
   "license": "ISC",
