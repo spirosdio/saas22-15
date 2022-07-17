@@ -414,6 +414,9 @@ function DaysLeft() {
   if (manipulateTime == "00") {
     console.log(manipulateTime, "is divisible by 4", daysleftt, "days left");
     let daysLeftNew = parseInt(daysleftt) - 1;
+    if (daysLeftNew < 1) {
+      daysLeftNew = 0;
+    }
     console.log(daysLeftNew, "newdays left");
     const data1 = { daysleft: daysLeftNew };
     const update = () => {
