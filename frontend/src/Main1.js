@@ -115,23 +115,24 @@ export default function Main1() {
 
       <Row>
         <Col className="leftColumn" xs={4} style={{ backgroundColor: "gray" }}>
+          <p></p>
           <CreateURL
             changingUrl={changingUrl}
             handleRefreshparent={handleRefreshparent}
           />
         </Col>
 
-        <Col className="maincolumn" style={{ backgroundColor: "lime" }}>
+        <Col className="maincolumn" style={{}}>
           <>
             <Row>
               <Col>
-                <div style={{ color: "black" }}>Quantity </div>
+                <div style={{ color: "white" }}>Quantity </div>
               </Col>
               <Col>
-                <div style={{ color: "black" }}>Country</div>
+                <div style={{ color: "white" }}>Country</div>
               </Col>
               <Col>
-                <div style={{ color: "black" }}>Param2</div>
+                <div style={{ color: "white" }}>Param2</div>
               </Col>
             </Row>
             <div>
@@ -211,9 +212,11 @@ function SignedInNavBar() {
 
   return (
     <>
-      <Navbar >
+      <Navbar>
         <Container className="navbar">
-          <Navbar.Brand href="/main1" style= {{fontSize : "23px"}}>EnergyLive2022</Navbar.Brand>
+          <Navbar.Brand href="/main1" style={{ fontSize: "23px" }}>
+            EnergyLive2022
+          </Navbar.Brand>
 
           <Navbar.Toggle />
 
