@@ -10,6 +10,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
+import CreateURL from "./CreateURL";
 import stockCharts from "highcharts/modules/stock";
 let globalTime = "";
 const ATL = "Actual Total Load";
@@ -53,16 +54,35 @@ export default function Main1() {
   let Quantity = "Quantity";
   let Country = "Country";
   let Param2 = "Param2";
+  const [changingUrl, setChangingUrl] = useState(
+    "http://localhost:3001/ATL/2022-01-01&ALCTY"
+  );
 
-  const [dateFrom, setDateFrom] = useState("2022-01-01T00:08");
+  const handleRefreshparent = (newUrl) => {
+    const url = newUrl;
+    setChangingUrl(url);
+    console.log(changingUrl);
+  };
+  //my deletethischangingurl start
+
+  const [dateFrom, setDateFrom] = useState("2022-01-01");
   const [country, setCountry] = useState("");
   const [quantity, setQuantity] = useState("");
   const [param2, setParam2] = useState("");
+
+  //my deletethischangingurl start
+  const [deletethischangingurl, setdeletethischangingurl] = useState(
+    "http://localhost:3001/ATL/2022-01-01&ALCTY"
+  );
+
+  //my deletethischangingurl end
+
   const displayInfo = () => {
-    console.log(country);
-    console.log(quantity);
-    console.log(param2);
-    console.log(dateFrom);
+    setdeletethischangingurl(
+      `http://localhost:3001/${quantity}/${dateFrom}&${country}&${param2}`
+    );
+
+    console.log(deletethischangingurl);
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,7 +140,7 @@ export default function Main1() {
   const download2 = (e) => {
     download("data.json", mySeriesJson.toString());
   };
-  const [data, setData] = useState([]);
+  const [countryData, setCountryData] = useState([]);
 
   useEffect(() => {
     axios
@@ -128,12 +148,12 @@ export default function Main1() {
         "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json"
       )
 
-      .then((res) => setData(res.data))
+      .then((res) => setCountryData(res.data))
 
       .catch((err) => console.log(err));
   }, []);
 
-  const countries = [...new Set(data.map((item) => item.country))];
+  const countries = [...new Set(countryData.map((item) => item.country))];
   return (
     <Container style={{}}>
       <Row>
@@ -143,91 +163,11 @@ export default function Main1() {
       </Row>
 
       <Row>
-        <Col className="leftRow" xs={4} style={{ backgroundColor: "gray" }}>
-          <label>Date From</label>
-          <input
-            type={"datetime-local"}
-            onChange={(event) => {
-              setDateFrom(event.target.value);
-            }}
-          ></input>
-          <label>Country</label>
-
-          <select
-            onChange={(event) => {
-              setCountry(event.target.value);
-            }}
-          >
-            <option value="" selected></option>
-            {countries.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-
-          <p></p>
-          <label>Quantity</label>
-          <select
-            onChange={(event) => {
-              setQuantity(event.target.value);
-
-              setParam2("");
-
-              console.log(
-                event.target.value,
-                param2,
-                "quantity has changes and now "
-              );
-              if (event.target.value === AGPT) {
-              }
-              if (event.target.value === PF) {
-              }
-            }}
-          >
-            <option key="" selected></option>
-            <option key={ATL}>{ATL}</option>
-            <option key={AGPT}>{AGPT}</option>
-            <option key={PF}>{PF}</option>
-          </select>
-
-          <p></p>
-          {quantity === AGPT ? (
-            <>
-              <label>Generation Type</label>
-              <input
-                type="text"
-                onChange={(event) => {
-                  setParam2(event.target.value);
-                }}
-              ></input>
-            </>
-          ) : (
-            ""
-          )}
-          {quantity === PF ? (
-            <>
-              <label>Second Country</label>
-
-              <select
-                onChange={(event) => {
-                  setParam2(event.target.value);
-                }}
-              >
-                <option value="" selected></option>
-                {countries.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </>
-          ) : (
-            " "
-          )}
-          <p></p>
-          <button onClick={displayInfo}>Refresh</button>
-          <button onClick={displayInfo}>fake refresh</button>
+        <Col className="leftColumn" xs={4} style={{ backgroundColor: "gray" }}>
+          <CreateURL
+            changingUrl={changingUrl}
+            handleRefreshparent={handleRefreshparent}
+          />
         </Col>
 
         <Col className="maincolumn" style={{ backgroundColor: "lime" }}>
@@ -264,33 +204,38 @@ export default function Main1() {
               marginTop: 20,
             }}
           ></div>
-          <Row className="bottomrow" style={{ margin: "1%", margin: "1px" }}>
-            <Col>
-              <div style={{ color: "black" }} href="/Legal">
-                Service Status: {status}
-              </div>
-            </Col>
-            <Col>
-              <DaysLeft></DaysLeft>
-            </Col>
-
-            <Col>
-              <Nav.Link style={{ color: "black" }} href="/profile">
-                Extend Plan
-              </Nav.Link>
-            </Col>
-            <Col>
-              <Nav.Link style={{ color: "black" }} href="/About">
-                About
-              </Nav.Link>
-            </Col>
-          </Row>
+          <Bottomrow></Bottomrow>
         </Col>
       </Row>
     </Container>
   );
 }
+function Bottomrow() {
+  const status = "Active";
+  return (
+    <Row className="bottomrow" style={{ margin: "1%", margin: "1px" }}>
+      <Col>
+        <div style={{ color: "black" }} href="/Legal">
+          Service Status: {status}
+        </div>
+      </Col>
+      <Col>
+        <DaysLeft></DaysLeft>
+      </Col>
 
+      <Col>
+        <Nav.Link style={{ color: "black" }} href="/profile">
+          Extend Plan
+        </Nav.Link>
+      </Col>
+      <Col>
+        <Nav.Link style={{ color: "black" }} href="/About">
+          About
+        </Nav.Link>
+      </Col>
+    </Row>
+  );
+}
 function SignedInNavBar() {
   const [name, setName] = useState("");
   const [id, setId] = useState("");
@@ -329,7 +274,6 @@ function SignedInNavBar() {
           </Navbar.Collapse>
 
           <Navbar.Toggle />
-
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
               <a href="http://localhost:5000/auth/logout">Sign Out</a>
@@ -412,12 +356,11 @@ function DaysLeft() {
 
   const manipulateTime = myTime.slice(11, 13);
   if (manipulateTime == "00") {
-    console.log(manipulateTime, "is divisible by 4", daysleftt, "days left");
     let daysLeftNew = parseInt(daysleftt) - 1;
     if (daysLeftNew < 1) {
+      alert("Please extend your plan");
       daysLeftNew = 0;
     }
-    console.log(daysLeftNew, "newdays left");
     const data1 = { daysleft: daysLeftNew };
     const update = () => {
       axios.patch(`http://localhost:5000/auth/extend/${id}`, data1);
