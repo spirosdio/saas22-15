@@ -10,7 +10,7 @@ import "./App.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { ListGroup } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import { useHistory } from "react-router-dom";
 import { Col } from "react-bootstrap";
@@ -21,22 +21,40 @@ export default function Profile() {
   const coursesPage = () => {
     history.push("/main1");
   };
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(0);
   const [plan, setPlan] = useState("");
   const [data, setData] = useState(null);
 
+  const [id, setId] =useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [daysleft, setDaysLeft] = useState("");
+  const [daysleftt, setDaysLeft] = useState("");
   const [lastLogin, setLastLogin] = useState("");
-
-  
 
   const handleSelect = (e) => {
     setValue(e);
   };
+  
+  
+  //console.log(updatedPlan);
 
+  /*
+  const plann = (id) => {
+    axios({
+      method: "PUT",
+      data: {
+        "daysleft" : updatedPlan,
+      },
+      withCredentials: true,
+      url: "http://localhost:5000/auth/extend/:id",
+    }).then((res) => console.log(res));
+  };
+  useEffect(() => {
+    plann(id);
+  }, []);
+  */
+  /*
   const plann = () => {
     axios({
       method: "POST",
@@ -47,13 +65,15 @@ export default function Profile() {
       url: "http://localhost:5000/auth/extend",
     }).then((res) => console.log(res));
   };
-
+  */
+  
   const getUser = () => {
     axios({
       method: "GET",
       withCredentials: true,
-      url: "http://localhost:5000/auth/user",
+      url: "http://localhost:5000/user/get-user",
     }).then((res) => {
+      setId(res.data._id);
       setFirstName(res.data.firstName);
       setLastName(res.data.lastName);
       setEmail(res.data.email);
@@ -64,27 +84,48 @@ export default function Profile() {
   useEffect(() => {
     getUser();
   }, []);
+  
+  
+  let updatedPlan = parseInt(value) + parseInt(daysleftt);
+  const data1 = { daysleft : updatedPlan};
+  const update = () =>{
+      axios.patch(`http://localhost:5000/user/extend/${id}`,data1)
+  };
+  
 
-  const date = lastLogin.slice(0,10); //set last login date
-  const time = lastLogin.slice(11,19); //set last login time
-  const dateTime = date + " , " +time;
+  const date = lastLogin.slice(0, 10); //set last login date
+  const time = lastLogin.slice(11, 19); //set last login time
+  const dateTime = date + " , " + time;
   return (
     <>
       <header className="App-header">
-        <h1>Energy Live 2022</h1>
+        <h1 style={{marginBottom: "10vh"}}>Energy Live 2022</h1>
+
+        <Row>
+          <Col className="button2" style={{ backgroundColor: "grey", width: '555px' , marginBottom: "2vh"}}>First Name:</Col>
+          <Col className="button2" style={{marginBottom: "2vh"}} >{firstName}</Col>
+        </Row>
+        <Row>
+          <Col className="button2" style={{ backgroundColor: "grey", width: '605px' , marginBottom: "2vh"}}>Last Name:</Col>
+          <Col className="button2" style={{marginBottom: "2vh"}}>{lastName}</Col>
+        </Row>
+        <Row>
+          <Col className="button2" style={{ backgroundColor: "grey", width: '412px' , marginBottom: "2vh"}}>Email address:</Col>
+          <Col className="button2" style={{marginBottom: "2vh"}}>{email}</Col>
+        </Row>
+        <Row>
+          <Col className="button2" style={{ backgroundColor: "grey", width: '320px', marginBottom: "2vh" }}>Last Login:</Col>
+          <Col className="button2" style={{marginBottom: "2vh"}}>Date: {date} Time:{time}</Col>
+        </Row>
+        <Row>
+          <Col></Col>
+          <Col></Col>
+        </Row>
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label style={{ marginTop: "20px" }}>First Name</Form.Label>
-            <Form.Control type="email" placeholder={firstName} />
-            <Form.Label style={{ marginTop: "20px" }}>Last Name</Form.Label>
-            <Form.Control type="email" placeholder={lastName} />
-            <Form.Label style={{ marginTop: "20px" }}>Email address</Form.Label>
-            <Form.Control type="email" placeholder={email} />
-            <Form.Label style={{ marginTop: "20px" }}>Last Login</Form.Label>
-            <Form.Control type="email" placeholder={dateTime} />
             <Row>
-              <Col>
-                <p>Days left: {daysleft}</p>
+              <Col className="button2" style={{ backgroundColor: "grey", width: '557px', marginBottom: "2vh" , marginRight: "30px"}}>
+                <p>Days left: {daysleftt}</p>
               </Col>
               <Col>
                 <DropdownButton
@@ -93,7 +134,7 @@ export default function Profile() {
                   title={value}
                   id="dropdown-menu-align-right"
                   onSelect={handleSelect}
-                  style={{ marginTop: "20px" }}
+                  style={{ marginTop: "5px", marginLeft: "0px" }}
                 >
                   <Dropdown.Item eventKey="1">1 </Dropdown.Item>
                   <Dropdown.Item eventKey="5">5 </Dropdown.Item>
@@ -105,21 +146,22 @@ export default function Profile() {
             </Row>
           </Form.Group>
 
-          <Button
+          <button
+            className="button"
             variant="primary"
             type="submit"
             style={{ marginRight: "40px" }}
-            onClick={plann}
+            onClick={update}
           >
             Extend
-          </Button>
+          </button>
 
-          <Button variant="primary" type="cancel">
+          <button variant="primary" type="cancel" className="button">
             Cancel
-          </Button>
+          </button>
         </Form>
 
-        <a href="/main1" style={{ marginTop: "30px" }}>
+        <a className="button" href="/main1" style={{ marginTop: "30px" }}>
           Back
         </a>
       </header>

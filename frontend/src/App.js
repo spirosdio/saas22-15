@@ -9,6 +9,7 @@ import Main1 from "./Main1";
 
 import Home from "./Home";
 import Profile from "./Profile";
+import About from "./About.js";
 
 import { BrowserRouter as Router,Routes, Route, Switch, Redirect } from "react-router-dom";
 
@@ -56,6 +57,30 @@ function App() {
       </div>
     </Router>
   );
+  /*
+  return (
+		<div className="App">
+			<Router>
+        <Routes>
+				<Route
+					exact
+					path="/"
+					element={user ? <Redirect to="main1"/>: <Redirect to="/"/>}
+				/>
+				<Route
+					exact
+					path="/main1"
+					element={user ? <Redirect to="main1"/> : <Redirect to="/" />}
+				/>
+				<Route
+          
+					path="/profile"
+					element={user ? <Redirect to="profile"/> : <Redirect to="/" />}
+				/>
+        </Routes>
+			</Router>
+		</div>
+	);
   */
   return (
     <Router>
@@ -63,6 +88,7 @@ function App() {
           <HomeRoute exact path="/" component={Home}/>
           <PrivateRoute  path="/main1" component={Main1}/>
           <PrivateRoute  path="/profile" component={Profile}/>
+          <Route path="/About" component={About}/>
       </div>
     </Router>
   );

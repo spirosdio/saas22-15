@@ -37,3 +37,90 @@ body {
 .refresh {
   margin-top: 10px;
 }
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 35vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.leftRow {
+  background-color: #646363;
+  width: 20vh;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: start;
+  font-size: calc(15px);
+  color: white;
+}
+
+.navbar {
+  background-color: #ffffff;
+  font-size: calc(16px);
+}
+
+.maincolumn{
+  background-color: #507099 ;
+  font-size: calc(15px);
+  color: white;
+}
+
+
+.button {
+  background-color: rgb(240, 233, 233);
+  border-radius: 8px;
+  border-width: 0;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 10px 12px;
+  text-align: center;
+  transition: all 200ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button2 {
+  background-color: #507099;
+  border-radius: 8px;
+  border-width: 0;
+  color: #ffffff;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 10px 12px;
+  text-align: center;
+  transition: all 200ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+

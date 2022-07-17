@@ -21,17 +21,17 @@ export default function Home() {
     <>
       <header className="App-header">
         <img
-          style={{ marginTop: "2%" }}
+          style={{ marginTop: "1%" }}
           src={logo}
           className="App-logo"
           alt="logo"
         />
 
-        <h1>Energy Live 2022</h1>
-
+        <h1 style={{ marginTop: "1%" }}>Energy Live 2022</h1>
+        
         <Button
           href="http://localhost:5000/auth/google"
-          style={{ margin: "10vh" }}
+          style={{ backgroundColor:"#507099", margin: "10vh" }}
           variant="primary"
           size="lg"
           active
@@ -43,30 +43,31 @@ export default function Home() {
           style={{
             minWidth: "70%",
             borderTop: "2px solid #000",
+            marginTop: "10px",
             marginLeft: 20,
             marginRight: 20,
           }}
         ></div>
         <>
-          <Navbar style={{ color: "black", margin: "5vh" }}>
+          <Navbar style={{ color: "black", margin: "0vh" }}>
             <Container className="navigationBar">
               <Nav className="me-auto">
                 <Nav.Link
-                  style={{ color: "black", margin: "5vh" }}
+                  style={{ color: "black", margin: "5vh" ,fontSize: '22px' }}
                   href="/About"
                 >
                   About
                 </Nav.Link>
 
                 <Nav.Link
-                  style={{ color: "black", margin: "5vh" }}
+                  style={{ color: "black", margin: "5vh" ,fontSize: '22px' }}
                   href="/Plans"
                 >
                   Plans
                 </Nav.Link>
 
                 <Nav.Link
-                  style={{ color: "black", margin: "5vh" }}
+                  style={{ color: "black", margin: "5vh", fontSize: '22px' }}
                   href="/Legal"
                 >
                   Legal

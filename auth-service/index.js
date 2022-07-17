@@ -7,7 +7,7 @@ const dotenv = require('dotenv')
 const passport = require('passport');
 const connectDB = require('./config/database')
 const MongoStore = require('connect-mongo');
-const cookieParser = require("cookie-parser");
+//const cookieParser = require("cookie-parser");
 
 dotenv.config({path: './config/config.env'})
 
@@ -16,13 +16,6 @@ require('./config/passport');
 const app = express();
 
 connectDB();
-
-/*
-function isLoggedIn(req, res, next) {
-  req.user ? next() : res.sendStatus(401);
-}
-*/
-
 
 app.use(
   cors({
@@ -43,7 +36,7 @@ app.use(
     store: MongoStore.create({mongoUrl: process.env.MONGO_URI,})
   })
 );
-//app.use(cookieParser("keyboard cat"));
+
 app.use(bodyParser.json());
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
@@ -53,37 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/auth", require("./routes/auth"));
+app.use("/user", require("./routes/userRoute"));
 
-/*
-app.get('/', (req, res) => {
-  res.send('<a href="/auth/google">Sign In with Google</a>');
-});
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: [  'profile' ] }
-));
-
-app.get( '/auth/google/callback',
-  passport.authenticate( 'google', {
-    successRedirect: '/connected',
-    failureRedirect: '/auth/google/failure'
-  })
-);
-
-app.get('/connected', isLoggedIn, (req, res) => {
-  res.send(`Hey ${req.user.displayName}`+ '<a href="/logout">Sign Out</a>');
-});
-
-app.get('/logout', (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.send('Goodbye!');
-});
-
-app.get('/auth/google/failure', (req, res) => {
-  res.send('Authentification Failed..');
-});
-
-*/
 
 app.listen(5000, () => console.log('listening on port: 5000'));
