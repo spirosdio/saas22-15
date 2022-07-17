@@ -19,7 +19,7 @@ setInterval(() => {
 const stream = Kafka.Producer.createWriteStream({
     'metadata.broker.list': 'localhost:9092',
     'message.max.bytes': '104857600'
-},{}, {topic: 'ATL_new_data'});
+},{}, {topic: 'AGPT_new_data'});
 
 const debug_producer = Kafka.Producer.createWriteStream({
     'metadata.broker.list': 'localhost:9092',
@@ -42,7 +42,8 @@ function csvToArray(csvFilePath, callback) {
     const results = [];
     const fs = require("fs");
     const { parse } = require("csv-parse");
-    const header = ["DateTime", "ResolutionCode", "AreaCode", "AreaTypeCode", "AreaName", "MapCode", "TotalLoadValue", "UpdateTime"];
+    // DateTime	ResolutionCode	AreaCode	AreaTypeCode	AreaName	MapCode	ProductionType	ActualGenerationOutput	ActualConsumption	UpdateTime
+    const header = ['DateTime', 'ResolutionCode', 'AreaCode', 'AreaTypeCode', 'AreaName', 'MapCode', 'ProductionType', 'ActualGenerationOutput', 'ActualConsumption', 'UpdateTime'];
 
     fs.createReadStream(csvFilePath)
     .pipe(parse({delimiter: "\t", from_line: 2})
@@ -63,10 +64,10 @@ function csvToArray(csvFilePath, callback) {
 
 function queueMessage(){
     const files_location = process.env.STATIC_FILE_FOLDER;
-    const path = files_location + 'ATL/' + date.replace('-', '_').replace('-', '_').replace('-', '_') + '_ActualTotalLoad6.1.A.csv';
+    const path = files_location + 'AGPT/' + date.replace('-', '_').replace('-', '_').replace('-', '_') + '_AggregatedGenerationPerType16.1.BC.csv';
 
     csvToArray(path, function(data) {
-        //console.log(data);
+        console.log(data);
 
         stream.write(Buffer.from(JSON.stringify(data)), (err) => {
             if (err) {
@@ -76,7 +77,7 @@ function queueMessage(){
                 console.log('Message sent successfully');
 
                 let debug = {
-                    message: 'Time changed to ' + date + ' so ATL-download-service downloaded the new data and sent it to Kafka.',
+                    message: 'Time changed to ' + date + ' so AGPT_Download_Service downloaded the new data and sent it to Kafka.',
                     data: data,
                 }
                 send_debug(debug);

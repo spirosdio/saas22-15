@@ -76,7 +76,7 @@ function queueMessage(){
                 console.log('Message sent successfully');
 
                 let debug = {
-                    message: 'Time changed to ' + date + ' so ATL-download-service downloaded the new data and sent it to Kafka.',
+                    message: 'Time changed to ' + date + ' so ATL_Download_Service downloaded the new data and sent it to Kafka.',
                     data: data,
                 }
                 send_debug(debug);
