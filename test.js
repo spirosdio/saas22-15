@@ -1,58 +1,38 @@
 
-var temp = {};
-temp['condition1'] = false;
-temp['condition2'] = false;
-temp['data1'] = {};
-temp['data2'] = {};
 
-setTimeout(() => {
-    temp.condition1 = true;
-    temp.data1 = {"data1": "data1"};
-}, 3000);
+function csvToArray(csvFilePath, callback) {
+    const results = [];
+    const fs = require("fs");
+    const { parse } = require("csv-parse");
+    const header = ["AreaRefName", "AreaName", "Country", "MapCode", "AreaTypeCode"];
 
-setTimeout(() => {
-    temp.condition2 = true;
-    temp.data2 = {"data2": "data2"};
-}, 2000);
-
-function waitForCondition(obj, field, data) {
-    return new Promise(resolve => {
-      function checkFlag() {
-        if (obj[field]) {
-          resolve();
-        } else {
-          setTimeout(checkFlag, 100); 
+    fs.createReadStream(csvFilePath)
+    .pipe(parse({delimiter: ";", from_line: 2})
+    .on("error", function(err) {
+        console.log(err.message);
+    }))
+    .on("data", function (row) {
+        let rowObject = {};
+        for (let i = 0; i < row.length; i++) {
+            rowObject[header[i]] = row[i];
         }
-      }
-      checkFlag();
-    });
-}
-  
-async function run(obj, field, data) {
-    await waitForCondition(obj, field, data);
-    console.log(obj[data]);
+        results.push(rowObject);
+    })
+    .on("end", function () {
+        callback(results);
+    })
 }
 
-//run(temp, 'condition1', 'data1');
-//run(temp, 'condition2', 'data2');
+csvToArray('prepare-ATL-data-service/countries_data.csv', function(data) {
+    
+    let newData = {};
+    let country_list = [];
 
-
-
-let p = new Promise(resolve => {
-    function checkFlag() {
-      if (temp['condition1']) {
-        resolve();
-      } else {
-        setTimeout(checkFlag, 100); 
-      }
+    for (let i = 0; i < data.length; i++) {
+        newData[data[i].Country] = data[i].AreaName.replace(" ", "");
+        country_list.push(data[i].Country);
     }
-    checkFlag();
-    });
 
-    p.then(() => {
-        console.log(temp);
-        console.log(temp['data1']);
-        delete temp['condition1'];
-        delete temp['data1'];
-        console.log(temp);
-    });
+    console.log(newData);
+    console.log(country_list);
+});

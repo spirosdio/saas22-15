@@ -84,6 +84,22 @@ function send_reply_data(message){
     })
 }
 
+const debug_producer = Kafka.Producer.createWriteStream({
+    'metadata.broker.list': 'localhost:9092',
+    'message.max.bytes': '104857600'
+},{}, {topic: 'Debug_topic'});
+
+function send_debug(message){
+    debug_producer.write(Buffer.from(JSON.stringify(message)), (err) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('Message sent successfully');
+        }
+    })
+}
+
 
 ATLNewDataConsumer.on('ready', function() {
     console.log('ATLNewDataConsumer is ready');
@@ -96,6 +112,12 @@ ATLNewDataConsumer.on('ready', function() {
     var myobj = JSON.parse(data.value.toString());
     //console.log(myobj);
     processDataAndSave(myobj);
+
+    let debug = {
+        message: 'ATL Prepare Service received new data and is now populating the database with it',
+        data: myobj,
+    };
+    send_debug(debug);
 });
 
 
@@ -123,8 +145,13 @@ ATLRequestConsumer.on('ready', function() {
     console.log(err);
 }).on('data', function(data) {
     var myobj = JSON.parse(data.value.toString());
-    console.log(myobj);
+    //console.log(myobj);
 
+    let debug = {
+        message: 'ATL Prepare Service received request for data',
+        data: myobj,
+    };
+    send_debug(debug);
 
     var dateFrom = myobj.dateFrom;
     dateFrom = dateFrom;
@@ -139,8 +166,14 @@ ATLRequestConsumer.on('ready', function() {
         } else {
             polish_data(data, function(newData) {
                 send_reply_data({ "client_id": myobj.client_id, "data": newData });
+                let debug = {
+                    message: 'ATL Prepare Service sent data to client',
+                    data: { "client_id": myobj.client_id, "data": newData },
+                };
+                send_debug(debug);
             });
         }
     }).sort({ DateTime: 1 });
 
 });
+

@@ -15,6 +15,11 @@ const request_data_producer = Kafka.Producer.createWriteStream({
     'message.max.bytes': '104857600'
 },{}, {topic: 'ATL_request_data'});
 
+const debug_producer = Kafka.Producer.createWriteStream({
+    'metadata.broker.list': 'localhost:9092',
+    'message.max.bytes': '104857600'
+},{}, {topic: 'Debug_topic'});
+
 const ATLReplyConsumer = Kafka.KafkaConsumer({
     'group.id': 'kafka',
     'metadata.broker.list': 'localhost:9092',
@@ -50,17 +55,31 @@ function send_request(message){
     })
 }
 
-app.use('/:dateFrom&:country', (req, res) => {
+function send_debug(message){
+    debug_producer.write(Buffer.from(JSON.stringify(message)), (err) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('Message sent successfully');
+        }
+    })
+}
 
-    console.log('Global data when the request is sent:');
-    console.log(global_data)
+app.use('/:dateFrom&:country', (req, res) => {
 
     var my_client_id = global_client_id;
     global_client_id++;
     var dateFrom = req.params.dateFrom;
     dateFrom = new Date(dateFrom);
     const country = req.params.country;
-    send_request({ client_id: my_client_id, country: country, dateFrom: dateFrom });
+    const request = { client_id: my_client_id, country: country, dateFrom: dateFrom };
+    send_request(request);
+    let debug = {
+        message: 'ATL Middleware sent message to kafka requesting: ' + country + ' from ' + dateFrom + ' with client_id: ' + my_client_id,
+        data: request,
+    }
+    send_debug(debug);
     global_data[my_client_id.toString()] = false;
     global_data['data' + my_client_id.toString()] = {};
 
@@ -76,13 +95,14 @@ app.use('/:dateFrom&:country', (req, res) => {
     });
     
     p.then(() => {
-        console.log('Global data when kafka replies:');
-        console.log(global_data);
+        debug = {
+            message: 'ATL Middleware received message from kafka: ' + country + ' from ' + dateFrom + ' with client_id: ' + my_client_id,
+            data: global_data['data' + my_client_id.toString()],
+        }
+        send_debug(debug);
         res.status(200).json(global_data['data' + (my_client_id).toString()]);
         delete global_data[my_client_id.toString()];
         delete global_data['data' + my_client_id.toString()];
-        console.log('Global data after the request is sent:');
-        console.log(global_data);
     });
 
 });

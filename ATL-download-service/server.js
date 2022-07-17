@@ -21,6 +21,22 @@ const stream = Kafka.Producer.createWriteStream({
     'message.max.bytes': '104857600'
 },{}, {topic: 'ATL_new_data'});
 
+const debug_producer = Kafka.Producer.createWriteStream({
+    'metadata.broker.list': 'localhost:9092',
+    'message.max.bytes': '104857600'
+},{}, {topic: 'Debug_topic'});
+
+function send_debug(message){
+    debug_producer.write(Buffer.from(JSON.stringify(message)), (err) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('Message sent successfully');
+        }
+    })
+}
+
 // a function that takes the path to a CSV file and returns a json object
 function csvToArray(csvFilePath, callback) {
     const results = [];
@@ -29,7 +45,7 @@ function csvToArray(csvFilePath, callback) {
     const header = ["DateTime", "ResolutionCode", "AreaCode", "AreaTypeCode", "AreaName", "MapCode", "TotalLoadValue", "UpdateTime"];
 
     fs.createReadStream(csvFilePath)
-    .pipe(parse({ delimiter: "\t", from_line: 2, relax_column_count: true})
+    .pipe(parse({delimiter: "\t", from_line: 2})
     .on("error", function(err) {
         console.log(err.message);
     }))
@@ -41,57 +57,32 @@ function csvToArray(csvFilePath, callback) {
         results.push(rowObject);
     })
     .on("end", function () {
-        // do something with the data
         callback(results);
     })
 }
 
 function queueMessage(){
-    const filename = 'ATL/' + date.replace('-', '_').replace('-', '_').replace('-', '_') + '_ActualTotalLoad6.1.A.csv';
-    const file = fs.createWriteStream("ATL-download-service/temp/" + filename);
-    const request = http.get(process.env.FILE_SERVER_URL + filename, function(response) {
-        response.pipe(file);
+    const path = '/media/chris/FroutaDrive/saasData/saas2022Data/' + 'ATL/' + date.replace('-', '_').replace('-', '_').replace('-', '_') + '_ActualTotalLoad6.1.A.csv';
 
-        // after download completed close filestream
-        file.on("finish", () => {
-            file.close();
-        });
-    });
+    csvToArray(path, function(data) {
+        //console.log(data);
 
-    // Check if file is empty
-    request.on('response', (response) => {
-        var path = "ATL-download-service/temp/" + filename;
-        if (response.statusCode === 200) {
-            console.log("File: " + filename + " downloaded successfully.");
-            csvToArray(path, function(data) {
-                //console.log(data);
-
-                stream.write(Buffer.from(JSON.stringify(data)), (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    else {
-                        console.log('Message sent successfully');
-                    }
-                })
-
-                try {
-                    fs.unlinkSync(path)
-                    //file removed
-                } catch(err) {
-                    console.error(err)
-                }
-            });
-        } else {
-            console.log("File: " + filename + " not found.");
-            try {
-                fs.unlinkSync(path)
-                //file removed
-            } catch(err) {
-                console.error(err)
+        stream.write(Buffer.from(JSON.stringify(data)), (err) => {
+            if (err) {
+                console.log(err);
             }
-        }
+            else {
+                console.log('Message sent successfully');
+
+                let debug = {
+                    message: 'Time changed to ' + date + ' so ATL-download-service downloaded the new data and sent it to Kafka.',
+                    data: data,
+                }
+                send_debug(debug);
+            }
+        })
     });
+
 }
 
 var prevDate = date;
