@@ -287,17 +287,17 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
         onClick={() => {
           if (quantity === ATL) {
             setChangingUrl(
-              `http://localhost:3001/${QuantitiesObject[quantity]}/${dateFrom}&${CountriesObject[country]}`
+              `http://localhost:3001/${dateFrom}&${CountriesObject[country]}`
             );
           } else {
             if (quantity == "Physical Flows") {
               setChangingUrl(
-                `http://localhost:3001/${QuantitiesObject[quantity]}/${dateFrom}&${CountriesObject[country]}&${CountriesObject[country2]}`
+                `http://localhost:3003/${dateFrom}&${CountriesObject[country]}&${CountriesObject[country2]}`
               );
             }
             if (quantity == "Actual Generation Per Unit") {
               setChangingUrl(
-                `http://localhost:3001/${QuantitiesObject[quantity]}/${dateFrom}&${CountriesObject[country]}&${TypesObject[type]}`
+                `http://localhost:3002/${dateFrom}&${CountriesObject[country]}&${TypesObject[type]}`
               );
             }
           }
@@ -305,7 +305,7 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
           handleRefreshparent(changingUrl);
         }}
       >
-        refresh
+        Refresh
       </button>
     </div>
   );

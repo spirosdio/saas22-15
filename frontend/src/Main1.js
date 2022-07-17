@@ -1,23 +1,17 @@
 import "./App.css";
-import graph from "./graph.png"; // with import
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { useState, useEffect } from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
-import { Form, Row, Col, Button } from "react-bootstrap";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
+import { Row, Col, Button } from "react-bootstrap";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import CreateURL from "./CreateURL";
-import stockCharts from "highcharts/modules/stock";
-let globalTime = "";
-const ATL = "Actual Total Load";
-const AGPT = "Agregate generation per type";
-const PF = "Physical Flows";
-const myUrl = "http://localhost:3020/";
+const myGlobalClockURL = "http://localhost:3020/";
+const myUrl = "http://localhost:3001/ATL/2022-01-01&ALCTY";
 
+const status = "Active";
 function DateStringArrayToEpoch(mySeries) {
   for (let i = 0; i < mySeries.length; i++) {
     mySeries[i].DateTime = new Date(mySeries[i].DateTime).getTime();
@@ -50,10 +44,6 @@ function download(filename, text) {
 
 export default function Main1() {
   let status = "Not Live";
-  let daysLeft = 32;
-  let Quantity = "Quantity";
-  let Country = "Country";
-  let Param2 = "Param2";
   const [changingUrl, setChangingUrl] = useState(
     "http://localhost:3001/ATL/2022-01-01&ALCTY"
   );
@@ -63,32 +53,6 @@ export default function Main1() {
     setChangingUrl(url);
     console.log(changingUrl);
   };
-  //my deletethischangingurl start
-
-  const [dateFrom, setDateFrom] = useState("2022-01-01");
-  const [country, setCountry] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [param2, setParam2] = useState("");
-
-  //my deletethischangingurl start
-  const [deletethischangingurl, setdeletethischangingurl] = useState(
-    "http://localhost:3001/ATL/2022-01-01&ALCTY"
-  );
-
-  //my deletethischangingurl end
-
-  const displayInfo = () => {
-    setdeletethischangingurl(
-      `http://localhost:3001/${quantity}/${dateFrom}&${country}&${param2}`
-    );
-
-    console.log(deletethischangingurl);
-  };
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  const otherUrl = "https://demo-live-data.highcharts.com/aapl-c.json";
-
-  const myUrl = "http://localhost:3001/ATL/2022-01-01&ALCTY";
 
   var [mySeries, setmySeries] = useState([]);
 
@@ -113,7 +77,6 @@ export default function Main1() {
   mySeries = DateStringArrayToEpoch(mySeries);
 
   mySeries = ArrayOfObjectsToArrayOfArrays(mySeries);
-  console.log(mySeries);
 
   const myOptins = {
     //Highcharts.stockChart('container', {
@@ -140,20 +103,7 @@ export default function Main1() {
   const download2 = (e) => {
     download("data.json", mySeriesJson.toString());
   };
-  const [countryData, setCountryData] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(
-        "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json"
-      )
-
-      .then((res) => setCountryData(res.data))
-
-      .catch((err) => console.log(err));
-  }, []);
-
-  const countries = [...new Set(countryData.map((item) => item.country))];
   return (
     <Container style={{}}>
       <Row>
@@ -171,30 +121,33 @@ export default function Main1() {
         </Col>
 
         <Col className="maincolumn" style={{ backgroundColor: "lime" }}>
-          these come from the json file
-          <Row>
-            <Col>
-              <div style={{ color: "black" }}>{Quantity} </div>
-            </Col>
-            <Col>
-              <div style={{ color: "black" }}>{Country}</div>
-            </Col>
-            <Col>
-              <div style={{ color: "black" }}>{Param2}</div>
-            </Col>
-          </Row>
-          <div>
-            <HighchartsReact highcharts={Highcharts} options={myOptins} />
-          </div>
-          <p style={{ textAlign: "left" }}>Latest Update dd.mm.hh.mm</p>
-          <Row>
-            <Col>
-              <Button>Download Image</Button>
-            </Col>
-            <Col>
-              <Button onClick={download2}>Download Data</Button>
-            </Col>
-          </Row>
+          <>
+            <Row>
+              <Col>
+                <div style={{ color: "black" }}>Quantity </div>
+              </Col>
+              <Col>
+                <div style={{ color: "black" }}>Country</div>
+              </Col>
+              <Col>
+                <div style={{ color: "black" }}>Param2</div>
+              </Col>
+            </Row>
+            <div>
+              <HighchartsReact highcharts={Highcharts} options={myOptins} />
+            </div>
+
+            <p style={{ textAlign: "left" }}>Latest Update dd.mm.hh.mm</p>
+
+            <Row>
+              <Col>
+                <Button>Download Image</Button>
+              </Col>
+              <Col>
+                <Button onClick={download2}>Download Data</Button>
+              </Col>
+            </Row>
+          </>
           <div
             style={{
               minWidth: "70%",
@@ -211,7 +164,6 @@ export default function Main1() {
   );
 }
 function Bottomrow() {
-  const status = "Active";
   return (
     <Row className="bottomrow" style={{ margin: "1%", margin: "1px" }}>
       <Col>
@@ -265,7 +217,7 @@ function SignedInNavBar() {
           <Navbar.Toggle />
 
           <Navbar.Collapse className="justify-content-end">
-            <ExampleCounter />
+            <GlobalClock />
           </Navbar.Collapse>
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
@@ -284,14 +236,13 @@ function SignedInNavBar() {
     </>
   );
 }
-
-function ExampleCounter() {
+function GlobalClock() {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       axios
-        .get(myUrl)
+        .get(myGlobalClockURL)
         .then((res) => {
           setCounter(res.data.date);
         })
@@ -329,7 +280,7 @@ function DaysLeft() {
   };
   const getTime = () => {
     axios
-      .get(myUrl)
+      .get(myGlobalClockURL)
       .then((res) => {
         setmyTime(res.data.date);
       })
