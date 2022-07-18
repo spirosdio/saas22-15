@@ -3,9 +3,18 @@ import MyChart from "./MyChart";
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
+
+//////////////   my constants to be variables from avar////////////////////////////////////////////////////////////////
 const ATL = "Actual Total Load";
 const AGPT = "Aggregate Generation per Type";
 const PF = "Physical Flows";
+
+const Ports = {
+  "Actual Total Load": "3001",
+  "Aggregate Generation per Type": "3002",
+  "Physical Flows": "3003",
+};
+//////////////////////////////////////////////////////////////////////////////////////////////
 function App() {
   const [configObj, setConfigObj] = useState({
     title: {
@@ -95,7 +104,7 @@ function App() {
         );
       });
   };
-  const handleClick = () => {
+  const handleClick = async () => {
     let newObj = { ...configObj };
 
     let myDataArray = getmySeries();
@@ -103,9 +112,15 @@ function App() {
     newObj.series[0].data = myDataArray;
     setConfigObj(newObj);
   };
+
   const getMyUrl = () => {
     let tempUrl =
-      "http://localhost:" + myQuantity + "/" + myDateString + "&" + myCountry;
+      "http://localhost:" +
+      Ports[myQuantity] +
+      "/" +
+      myDateString +
+      "&" +
+      myCountry;
     setMyUrl(tempUrl);
   };
   return (
@@ -123,7 +138,7 @@ function App() {
           }}
         ></input>
 
-        <label>quantity now is {myQuantity}</label>
+        <label>quantity now is {Ports[myQuantity]}</label>
         <input
           type="text"
           placeholder="enter quantity"
@@ -143,7 +158,9 @@ function App() {
         ></input>
         <label>url now is {myUrl}</label>
         <button onClick={getMyUrl}>update URL</button>
-        <button onClick={handleClick}>click to chage data</button>
+        <button onClick={handleClick}>
+          click and wait a sec and click again to chage data
+        </button>
       </header>
     </div>
   );
