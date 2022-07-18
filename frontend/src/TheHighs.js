@@ -25,7 +25,7 @@ function TheHighs({
         .get(CreateAgainUrl(changingUrl))
         .then((res) => {
           myTemp = DateStringArrayToEpoch(res.data);
-          myTemp = ArrayOfObjectsToArrayOfArrays(myTemp);
+          myTemp = ArrayOfObjectsToArrayOfArrays(myTemp, parentQuantity);
 
           setMyOptins({
             //Highcharts.stockChart('container', {
@@ -143,11 +143,30 @@ function DateStringArrayToEpoch(myJson) {
   }
   return myJson;
 }
-function ArrayOfObjectsToArrayOfArrays(myJson) {
+function ArrayOfObjectsToArrayOfArrays(myJson, parentQuantity) {
   let myJsonArray = [];
-  for (let i = 0; i < myJson.length; i++) {
-    myJsonArray.push([myJson[i].DateTime, myJson[i].TotalLoadValue]);
+
+  const QuantitiesObject = {
+    "Actual Total Load": "TotalLoadValue",
+    "Aggregate Generation per Type": "ActualGenerationOutput",
+    "Physical Flows": "FlowValue",
+  };
+  if (parentQuantity === "Actual Total Load") {
+    for (let i = 0; i < myJson.length; i++) {
+      myJsonArray.push([myJson[i].DateTime, myJson[i].TotalLoadValue]);
+    }
   }
+  if (parentQuantity === "Aggregate Generation per Type") {
+    for (let i = 0; i < myJson.length; i++) {
+      myJsonArray.push([myJson[i].DateTime, myJson[i].ActualGenerationOutput]);
+    }
+  }
+  if (parentQuantity === "Physical Flows") {
+    for (let i = 0; i < myJson.length; i++) {
+      myJsonArray.push([myJson[i].DateTime, myJson[i].FlowValue]);
+    }
+  }
+
   return myJsonArray;
 }
 

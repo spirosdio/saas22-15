@@ -8,7 +8,7 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
   const PF = "Physical Flows";
   const QuantitiesObject = {
     "Actual Total Load": "ATL",
-    "Actual Generation Per Unit": "AGPT",
+    "Aggregate Generation per Type": "AGPT",
     "Physical Flows": "PF",
   };
   const TypesObject = {
