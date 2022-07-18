@@ -16,6 +16,50 @@ const CountriesObject = {
   "North Macedonia": "MKCTY",
   Turkey: "TRCTY",
 };
+const typesObject = {
+  Biomass: "Biomass",
+  "Fossil Brown coal/Lignite": "FossilBrowncoalLignite",
+  "Fossil Coal-derived gas": "FossilCoalderivedgas",
+  "Fossil Gas": "FossilGas",
+  "Fossil Hard coal": "FossilHardcoal",
+  "Fossil Oil": "FossilOil",
+  "Fossil Oil shale": "FossilOilshale",
+  "Fossil Peat": "FossilPeat",
+  Geothermal: "Geothermal",
+  "Hydro Pumped Storage": "HydroPumpedStorage",
+  "Hydro Run-of-river and poundage": "HydroRunofriverandpoundage",
+  "Hydro Water Reservoir": "HydroWaterReservoir",
+  Marine: "Marine",
+  Nuclear: "Nuclear",
+  Other: "Other",
+  "Other renewable": "Otherrenewable",
+  Solar: "Solar",
+  Waste: "Waste",
+  "Wind Offshore": "WindOffshore",
+  "Wind Onshore": "WindOnshore",
+};
+const types = [
+  "Biomass",
+  "Fossil Brown coal/Lignite",
+  "Fossil Coal-derived gas",
+  "Fossil Gas",
+  "Fossil Hard coal",
+  "Fossil Oil",
+  "Fossil Oil shale",
+  "Fossil Peat",
+  "Geothermal",
+  "Hydro Pumped Storage",
+  "Hydro Run-of-river and poundage",
+  "Hydro Water Reservoir",
+  "Marine",
+  "Nuclear",
+  "Other",
+  "Other renewable",
+  "Solar",
+  "Waste",
+  "Wind Offshore",
+  "Wind Onshore",
+];
 const countries = ["Bulgaria", "Greece", "Italy", "North Macedonia", "Turkey"];
 const Ports = {
   "Actual Total Load": "3001",
@@ -89,6 +133,8 @@ function App() {
   const [myDateString, setMyDateString] = useState("2022-01-01");
   const [myQuantity, setMyQuantity] = useState(ATL);
   const [myCountry, setMyCountry] = useState("GRCTY");
+  const [myCountry2, setMyCountry2] = useState("GRCTY");
+  const [myType, setMyType] = useState("Waste");
   const getmySeries = () => {
     axios
       .get(myUrl)
@@ -122,13 +168,41 @@ function App() {
   };
 
   const getMyUrl = () => {
-    let tempUrl =
-      "http://localhost:" +
-      Ports[myQuantity] +
-      "/" +
-      myDateString +
-      "&" +
-      CountriesObject[myCountry];
+    let tempUrl = "";
+    if (myQuantity === ATL) {
+      tempUrl =
+        "http://localhost:" +
+        Ports[myQuantity] +
+        "/" +
+        myDateString +
+        "&" +
+        CountriesObject[myCountry];
+    }
+
+    if (myQuantity === AGPT) {
+      tempUrl =
+        "http://localhost:" +
+        Ports[myQuantity] +
+        "/" +
+        myDateString +
+        "&" +
+        CountriesObject[myCountry] +
+        "&" +
+        typesObject[myType];
+    }
+
+    if (myQuantity === PF) {
+      tempUrl =
+        "http://localhost:" +
+        Ports[myQuantity] +
+        "/" +
+        myDateString +
+        "&" +
+        CountriesObject[myCountry] +
+        "&" +
+        CountriesObject[myCountry2];
+    }
+
     setMyUrl(tempUrl);
   };
   return (
@@ -171,6 +245,44 @@ function App() {
             </option>
           ))}
         </select>
+        {myQuantity === AGPT ? (
+          <>
+            <label>Generation Type {typesObject[myType]}</label>
+            <select
+              onChange={(event) => {
+                setMyType(event.target.value);
+              }}
+            >
+              <option value=" " selected></option>
+              {types.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </>
+        ) : (
+          ""
+        )}
+        {myQuantity === PF ? (
+          <>
+            <label>country2 code now is {CountriesObject[myCountry2]}</label>
+            <select
+              onChange={(event) => {
+                setMyCountry2(event.target.value);
+              }}
+            >
+              <option value=" " selected></option>
+              {countries.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </>
+        ) : (
+          " "
+        )}
         <label>url now is {myUrl}</label>
         <button onClick={getMyUrl}>update URL</button>
         <button onClick={handleClick}>
