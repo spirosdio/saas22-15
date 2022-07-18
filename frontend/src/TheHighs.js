@@ -71,6 +71,9 @@ function TheHighs({
   const download2 = (e) => {
     download("data.json", myTemp.toString());
   };
+  const download3 = (e) => {
+    download("data.png", myTemp.toString());
+  };
   return (
     <div className="App">
       <Row>
@@ -106,7 +109,7 @@ function TheHighs({
 
       <Row>
         <Col>
-          <Button>Download Image</Button>
+          <Button onClick={download3}>Download Image</Button>
         </Col>
         <Col>
           <Button onClick={download2}>Download Data</Button>

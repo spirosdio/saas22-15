@@ -5,48 +5,15 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Row, Col, Button } from "react-bootstrap";
-import HighchartsReact from "highcharts-react-official";
-import Highcharts from "highcharts";
 import CreateURL from "./CreateURL";
 import TheHighs from "./TheHighs";
 const myGlobalClockURL = "http://localhost:3020/";
-const myUrl = "http://localhost:3001/2022-01-01&ALCTY";
-
 const status = "Active";
-function DateStringArrayToEpoch(mySeries) {
-  for (let i = 0; i < mySeries.length; i++) {
-    mySeries[i].DateTime = new Date(mySeries[i].DateTime).getTime();
-  }
-  return mySeries;
-}
-function ArrayOfObjectsToArrayOfArrays(mySeries) {
-  let mySeriesArray = [];
-  for (let i = 0; i < mySeries.length; i++) {
-    mySeriesArray.push([mySeries[i].DateTime, mySeries[i].TotalLoadValue]);
-  }
-  return mySeriesArray;
-}
-function download(filename, text) {
-  var pom = document.createElement("a");
-  pom.setAttribute(
-    "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
-  );
-  pom.setAttribute("download", filename);
-
-  if (document.createEvent) {
-    var event = document.createEvent("MouseEvents");
-    event.initEvent("click", true, true);
-    pom.dispatchEvent(event);
-  } else {
-    pom.click();
-  }
-}
 
 export default function Main1() {
   let status = "Not Live";
   const [changingUrl, setChangingUrl] = useState(
-    "http://localhost:3001/2022-01-01&ALCTY"
+    "http://localhost:3001/2022-01-01&GRCTY"
   );
   const [parentQuantity, setParentQuantity] = useState("");
   const [parentCountry, setParentCountry] = useState("");
@@ -54,64 +21,14 @@ export default function Main1() {
   const [parentType, setParentType] = useState("");
 
   const handleRefreshparent = (newUrl, quantity, country, type, country2) => {
-    const url = newUrl;
-    setChangingUrl(url);
-    console.log(changingUrl);
+    setChangingUrl(newUrl);
     setParentQuantity(quantity);
     setParentCountry(country);
     setParentCountry2(type);
     setParentType(country2);
+
+    console.log("this is handle refrech parent", changingUrl);
   };
-
-  var [mySeries, setmySeries] = useState([]);
-  var myTemp = [];
-  const getmySeries = () => {
-    axios
-      .get(myUrl)
-      .then((res) => {
-        myTemp = DateStringArrayToEpoch(res.data);
-
-        myTemp = ArrayOfObjectsToArrayOfArrays(myTemp);
-        console.log(myTemp);
-        setmySeries(myTemp);
-        console.log(mySeries);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log("finally");
-      });
-  };
-
-  useEffect(() => {
-    getmySeries();
-  }, []);
-
-  //  var mySeriesJson = JSON.stringify(mySeries);
-
-  const myOptins = {
-    //Highcharts.stockChart('container', {
-    rangeSelector: {
-      selected: 1,
-    },
-
-    title: {
-      text: myUrl,
-    },
-
-    series: [
-      {
-        name: myUrl,
-        data: mySeries,
-        tooltip: {
-          valueDecimals: 2,
-        },
-      },
-    ],
-  };
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <Container style={{}}>

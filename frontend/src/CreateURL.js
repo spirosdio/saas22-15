@@ -84,8 +84,8 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
 
   //my countrys start
 
-  const [country, setCountry] = useState("Albania");
-  const [country2, setCountry2] = useState("Austria");
+  const [country, setCountry] = useState("Greece");
+  const [country2, setCountry2] = useState("Greece");
 
   const countries = [
     "Bulgaria",
