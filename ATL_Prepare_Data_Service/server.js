@@ -173,18 +173,13 @@ ATLRequestConsumer.on("ready", function () {
     dateFrom = dateFrom;
     dateFrom = new Date(dateFrom);
     const country = myobj.country;
-    const models = require("./models/ATL_data");
-    const model = models.filter(
-      (model) => model.collection.name === country
-    )[0];
-    var dateTo = new Date(date.substring(0, 10));
+    const models = require('./models/ATL_data');
+    const model = models.filter(model => model.collection.name === country)[0];
+    var dateTo = new Date(date.substring(0,10))
     dateTo.setHours(dateTo.getHours() + parseInt(date.substring(11, 13)));
-
-    model
-      .find(
-        { DateTime: { $gte: dateFrom, $lt: dateTo } },
-        function (err, data) {
-          if (err) {
+    model.find({ DateTime: { $gte: dateFrom, $lt: dateTo } }, function(err, data) {
+        console.log(data);
+        if (err) {
             console.log(err);
             send_reply_data({ status: "error", message: err });
           } else {

@@ -1,4 +1,25 @@
 const mongoose = require('mongoose')
+const types = ['Biomass',
+    'FossilBrowncoalLignite',
+    'FossilCoalderivedgas',
+    'FossilGas',
+    'FossilHardcoal',
+    'FossilOil',
+    'FossilOilshale',
+    'FossilPeat',
+    'Geothermal',
+    'HydroPumpedStorage',
+    'HydroRunofriverandpoundage',
+    'HydroWaterReservoir',
+    'Marine',
+    'Nuclear',
+    'Other',
+    'Otherrenewable',
+    'ProductionType',
+    'Solar',
+    'Waste',
+    'WindOffshore',
+    'WindOnshore'];
 
 function csvToArray(csvFilePath, callback) {
     const results = [];
@@ -26,29 +47,28 @@ csvToArray("AGPT_Prepare_Data_Service/countries_data.csv", function(data) {
     let models = [];
 
     for (let i = 0; i < data.length; i++) {
-        let row = data[i];
-        
-        let name = row.AreaName.replace(" ", "");
+        for (let j = 0; j < types.length; j++) {
+            let row = data[i];
+            let type = types[j];
+            
+            let name = row.AreaName.replace(" ", "") + type;
 
-        let model = mongoose.model(name,
-            new mongoose.Schema({
-                DateTime: {
-                    type: Date,
-                    required: true
+            let model = mongoose.model(name,
+                new mongoose.Schema({
+                    DateTime: {
+                        type: Date,
+                        required: true
+                    },
+                    ActualGenerationOutput: {
+                        type: Number,
+                        required: true
+                    }
                 },
-                ProductionType: {
-                    type: String,
-                    required: true
-                },
-                ActualGenerationOutput: {
-                    type: Number,
-                    required: true
-                }
-            },
-            {collection: name}
-            )
-        );
-        models.push(model);
+                {collection: name}
+                )
+            );
+            models.push(model);
+        }
     }
 
     module.exports = models;

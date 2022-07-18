@@ -10,7 +10,10 @@
     "start:ATL:Middleware": "node ATL_Middleware/server.js",
     "start:AGPT:DownloadService": "node AGPT_Download_Service/server.js",
     "start:AGPT:PrepareDataService": "node AGPT_Prepare_Data_Service/server.js",
-    "start:AGPT:Middleware": "node AGPT_Middleware/server.js"
+    "start:AGPT:Middleware": "node AGPT_Middleware/server.js",
+    "start:PF:DownloadService": "node PF_Download_Service/server.js",
+    "start:PF:PrepareDataService": "node PF_Prepare_Data_Service/server.js",
+    "start:PF:Middleware": "node PF_Middleware/server.js"
   },
   "author": "",
   "license": "ISC",
