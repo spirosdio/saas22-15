@@ -1,6 +1,5 @@
 require('dotenv').config()
 
-// require models/ATL_data
 const models = require('./models/AGPT_data.js');
 const mongoose = require('mongoose')
 const http = require('http');
@@ -33,16 +32,15 @@ function processDataAndSave(data) {
     }
 
     for (let i = 0; i < data.length; i++) {
-        if (acceptableNames.includes(data[i].AreaName.replace(" ", ""))) {
+        if (acceptableNames.includes(data[i].AreaName.replace(" ", "") + data[i].ProductionType.replace(new RegExp('/', 'g'), " ").replace(new RegExp('-', 'g'), " ").replace(new RegExp(' ', 'g'), ""))) {
             let row = data[i];
             let newRow = {};
             //Date string is in format "YYYY-MM-DD HH:MM:SS.SSS", replace with "YYYY-MM-DDTHH:MM:SS.SSSZ"
             newRow.DateTime = row.DateTime.replace(" ", "T") + "Z";
             newRow.DateTime = new Date(newRow.DateTime);
-            newRow.ProductionType = row.ProductionType.replace(new RegExp('/', 'g'), " ").replace(new RegExp('-', 'g'), " ").replace(new RegExp(' ', 'g'), "");
             newRow.ActualGenerationOutput = row.ActualGenerationOutput;
             newData.push(newRow);
-            const model = models.filter(model => model.collection.name === row.AreaName.replace(" ", ""))[0];
+            const model = models.filter(model => model.collection.name === (row.AreaName.replace(" ", "") + row.ProductionType.replace(new RegExp('/', 'g'), " ").replace(new RegExp('-', 'g'), " ").replace(new RegExp(' ', 'g'), "") ) )[0];
             let entry = new model(newRow);
             const update = { $set: newRow };
             model.collection.updateOne({ DateTime: newRow.DateTime }, update, { upsert: true });
@@ -161,9 +159,10 @@ AGPTRequestConsumer.on('ready', function() {
     const productionType = myobj.ProductionType;
     console.log(dateFrom, country, productionType);
     const models = require('./models/AGPT_data');
-    const model = models.filter(model => model.collection.name === country)[0];
+    const model = models.filter(model => model.collection.name === (country + productionType))[0];
     console.log(model);
-    model.find({ DateTime: { $gte: dateFrom, $lt: new Date(date.substring(0,10)) }, ProductionType: productionType }, function(err, data) {
+    model.find({ DateTime: { $gte: dateFrom, $lt: new Date(date.substring(0,10)) } }, function(err, data) {
+        console.log(data);
         if (err) {
             console.log(err);
             send_reply_data({ "status": "error", "message": err });
@@ -171,7 +170,7 @@ AGPTRequestConsumer.on('ready', function() {
             polish_data(data, function(newData) {
                 send_reply_data({ "client_id": myobj.client_id, "data": newData });
                 let debug = {
-                    message: 'AGPT Prepare Service sent data to client',
+                    message: 'ATL Prepare Service sent data to client',
                     data: { "client_id": myobj.client_id, "data": newData },
                 };
                 send_debug(debug);

@@ -160,6 +160,7 @@ ATLRequestConsumer.on('ready', function() {
     const models = require('./models/ATL_data');
     const model = models.filter(model => model.collection.name === country)[0];
     model.find({ DateTime: { $gte: dateFrom, $lt: new Date(date.substring(0,10)) } }, function(err, data) {
+        console.log(data);
         if (err) {
             console.log(err);
             send_reply_data({ "status": "error", "message": err });
