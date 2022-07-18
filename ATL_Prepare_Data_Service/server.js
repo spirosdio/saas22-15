@@ -159,7 +159,9 @@ ATLRequestConsumer.on('ready', function() {
     const country = myobj.country;
     const models = require('./models/ATL_data');
     const model = models.filter(model => model.collection.name === country)[0];
-    model.find({ DateTime: { $gte: dateFrom, $lt: new Date(date.substring(0,10)) } }, function(err, data) {
+    var dateTo = new Date(date.substring(0,10))
+    dateTo.setHours(dateTo.getHours() + parseInt(date.substring(11, 13)));
+    model.find({ DateTime: { $gte: dateFrom, $lt: dateTo } }, function(err, data) {
         console.log(data);
         if (err) {
             console.log(err);
