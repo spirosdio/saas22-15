@@ -69,6 +69,9 @@ function App() {
   });
   const [mySeries, setMySeries] = useState([]);
   const [myUrl, setMyUrl] = useState("http://localhost:3001/2022-01-01&GRCTY");
+  const [myDateString, setMyDateString] = useState("2022-01-01");
+  const [myQuantity, setMyQuantity] = useState(ATL);
+  const [myCountry, setMyCountry] = useState("GRCTY");
   const getmySeries = () => {
     axios
       .get(myUrl)
@@ -85,11 +88,12 @@ function App() {
         let tempConfig = { ...configObj };
         tempConfig.series = [{ name: ATL, data: mySeries }];
         setConfigObj(tempConfig);
+
+        console.log(
+          "You can see here that it seys undefined i don't know why banana",
+          configObj.series.data
+        );
       });
-    console.log(
-      "this is the config after it is updated by the button press",
-      configObj.series[0]
-    );
   };
   const handleClick = () => {
     let newObj = { ...configObj };
@@ -99,20 +103,46 @@ function App() {
     newObj.series[0].data = myDataArray;
     setConfigObj(newObj);
   };
+  const getMyUrl = () => {
+    let tempUrl =
+      "http://localhost:" + myQuantity + "/" + myDateString + "&" + myCountry;
+    setMyUrl(tempUrl);
+  };
   return (
     <div className="App">
       <header className="App-header">
         <p>hello</p>
         <MyChart configObj={configObj} />
-        <label>URL</label>
+        <label>URL now is {myDateString}</label>
         <input
           type="text"
-          placeholder="enter url"
+          placeholder="enter datefrom"
           onChange={(event) => {
-            setMyUrl(event.target.value);
+            setMyDateString(event.target.value);
             console.log(event.target.value);
           }}
         ></input>
+
+        <label>quantity now is {myQuantity}</label>
+        <input
+          type="text"
+          placeholder="enter quantity"
+          onChange={(event) => {
+            setMyQuantity(event.target.value);
+            console.log(event.target.value);
+          }}
+        ></input>
+        <label>country now is {myCountry}</label>
+        <input
+          type="text"
+          placeholder="enter country"
+          onChange={(event) => {
+            setMyCountry(event.target.value);
+            console.log(event.target.value);
+          }}
+        ></input>
+        <label>url now is {myUrl}</label>
+        <button onClick={getMyUrl}>update URL</button>
         <button onClick={handleClick}>click to chage data</button>
       </header>
     </div>
