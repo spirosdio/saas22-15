@@ -1,0 +1,129 @@
+import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts";
+import React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { Row, Col, Button } from "react-bootstrap";
+const myGlobalClockURL = "http://localhost:3020/";
+function TheHighs({ changingUrl }) {
+  const [counter, setCounter] = useState([]);
+  console.log(changingUrl);
+  let myTemp = [];
+  const [myOptins, setMyOptins] = useState({});
+  const doTheDDOS = process.env.MAGIC_CLOCK_INTERVAL * 1000;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      axios
+        .get(changingUrl)
+        .then((res) => {
+          myTemp = DateStringArrayToEpoch(res.data);
+          myTemp = ArrayOfObjectsToArrayOfArrays(myTemp);
+          console.log(myTemp);
+          console.log(changingUrl);
+
+          setMyOptins({
+            //Highcharts.stockChart('container', {
+            rangeSelector: {
+              selected: 1,
+            },
+
+            title: {
+              text: changingUrl,
+            },
+
+            series: [
+              {
+                name: changingUrl,
+                data: myTemp,
+                tooltip: {
+                  valueDecimals: 2,
+                },
+              },
+            ],
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {});
+
+      axios
+        .get(myGlobalClockURL)
+        .then((res) => {
+          setCounter(res.data.date);
+          console.log(counter);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {});
+    }, doTheDDOS);
+
+    return () => clearInterval(interval);
+  }, []);
+  const download2 = (e) => {
+    download("data.json", myTemp.toString());
+  };
+  return (
+    <div className="App">
+      <Row>
+        <Col>
+          <div style={{ color: "white" }}>Quantity </div>
+        </Col>
+        <Col>
+          <div style={{ color: "white" }}>Country</div>
+        </Col>
+        <Col>
+          <div style={{ color: "white" }}>Param2</div>
+        </Col>
+      </Row>
+      <div>
+        <HighchartsReact highcharts={Highcharts} options={myOptins} />
+      </div>
+
+      <p style={{ textAlign: "left" }}>Latest Update: {counter}:00 </p>
+
+      <Row>
+        <Col>
+          <Button>Download Image</Button>
+        </Col>
+        <Col>
+          <Button onClick={download2}>Download Data</Button>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+
+export default TheHighs;
+
+function download(filename, text) {
+  var pom = document.createElement("a");
+  pom.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  pom.setAttribute("download", filename);
+
+  if (document.createEvent) {
+    var event = document.createEvent("MouseEvents");
+    event.initEvent("click", true, true);
+    pom.dispatchEvent(event);
+  } else {
+    pom.click();
+  }
+}
+
+function DateStringArrayToEpoch(myJson) {
+  for (let i = 0; i < myJson.length; i++) {
+    myJson[i].DateTime = new Date(myJson[i].DateTime).getTime();
+  }
+  return myJson;
+}
+function ArrayOfObjectsToArrayOfArrays(myJson) {
+  let myJsonArray = [];
+  for (let i = 0; i < myJson.length; i++) {
+    myJsonArray.push([myJson[i].DateTime, myJson[i].TotalLoadValue]);
+  }
+  return myJsonArray;
+}

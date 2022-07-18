@@ -35,50 +35,11 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
     "Wind Onshore": "WindOnshore",
   };
   const CountriesObject = {
-    Albania: "ALCTY",
-    Austria: "ATCTY",
-    Belarus: "BYCTY",
-    Belgium: "BECTY",
-    "Bosnia Herzegovina": "BACTY",
     Bulgaria: "BGCTY",
-    Croatia: "HRCTY",
-    Cyprus: "CYCTY",
-    "Czech Republic": "CZCTY",
-    Denmark: "DKCTY",
-    Estonia: "EECTY",
-    Finland: "FICTY",
-    France: "FRCTY",
-    Georgia: "GECTY",
-    Germany: "DECTY",
     Greece: "GRCTY",
-    Hungary: "HUCTY",
-    Ireland: "IECTY",
     Italy: "ITCTY",
-    Latvia: "LVCTY",
-    Lithuania: "LTCTY",
-    Luxembourg: "LUCTY",
-    Malta: "MTCTY",
-    Montenegro: "MECTY",
-    Netherlands: "NLCTY",
     "North Macedonia": "MKCTY",
-    Norway: "NOCTY",
-    Poland: "PLCTY",
-    Portugal: "PTCTY",
-    "Republic of Moldova": "MDCTY",
-    Romania: "ROCTY",
-    Serbia: "RSCTY",
-    Slovakia: "SKCTY",
-    Slovenia: "SICTY",
-    Spain: "ESCTY",
-    Sweden: "SECTY",
-    Switzerland: "CHCTY",
     Turkey: "TRCTY",
-    Ukraine: "UACTY",
-    "United Kingdom": "UKCTY",
-    Russia: "RUCTY",
-    Armenia: "AMCTY",
-    Azerbaijan: "AZCTY",
-    Kosovo: "XKCTY",
   };
   // date from start
   const [dateFrom, setDateFrom] = useState("2022-01-01");
@@ -86,7 +47,7 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
 
   //my changingUrl start
   const [changingUrl, setChangingUrl] = useState(
-    "http://localhost:3001/ATL/2022-01-01&ALCTY"
+    "http://localhost:3001/2022-01-01&ALCTY"
   );
   //my changingUrl end
 
@@ -127,73 +88,14 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
   const [country2, setCountry2] = useState("Austria");
 
   const countries = [
-    "Albania",
-    "Austria",
-    "Belarus",
-    "Belgium",
-    "Bosnia Herzegovina",
     "Bulgaria",
-    "Croatia",
-    "Cyprus",
-    "Czech Republic",
-    "Denmark",
-    "Estonia",
-    "Finland",
-    "France",
-    "Georgia",
-    "Germany",
     "Greece",
-    "Hungary",
-    "Ireland",
     "Italy",
-    "Latvia",
-    "Lithuania",
-    "Luxembourg",
-    "Malta",
-    "Montenegro",
-    "Netherlands",
     "North Macedonia",
-    "Norway",
-    "Poland",
-    "Portugal",
-    "Republic of Moldova",
-    "Romania",
-    "Serbia",
-    "Slovakia",
-    "Slovenia",
-    "Spain",
-    "Sweden",
-    "Switzerland",
     "Turkey",
-    "Ukraine",
-    "United Kingdom",
-    "Azerbaijan",
-    "Russia",
-    "Kosovo",
-    "Armenia",
   ];
   //my countrys end
 
-  const handleRefresh = (e) => {
-    if (quantity === ATL) {
-      setChangingUrl(
-        `http://localhost:3001/${QuantitiesObject[quantity]}/${dateFrom}&${CountriesObject[country]}`
-      );
-    } else {
-      if (quantity == "Physical Flows") {
-        setChangingUrl(
-          `http://localhost:3001/${QuantitiesObject[quantity]}/${dateFrom}&${CountriesObject[country]}&${CountriesObject[country2]}`
-        );
-      }
-      if (quantity == "Actual Generation Per Unit") {
-        setChangingUrl(
-          `http://localhost:3001/${QuantitiesObject[quantity]}/${dateFrom}&${CountriesObject[country]}&${TypesObject[type]}`
-        );
-      }
-    }
-
-    console.log(changingUrl);
-  };
   return (
     <div className="App">
       <>

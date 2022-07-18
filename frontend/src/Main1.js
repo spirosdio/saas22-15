@@ -8,6 +8,7 @@ import { Row, Col, Button } from "react-bootstrap";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import CreateURL from "./CreateURL";
+import TheHighs from "./TheHighs";
 const myGlobalClockURL = "http://localhost:3020/";
 const myUrl = "http://localhost:3001/2022-01-01&ALCTY";
 
@@ -55,12 +56,17 @@ export default function Main1() {
   };
 
   var [mySeries, setmySeries] = useState([]);
-
+  var myTemp = [];
   const getmySeries = () => {
     axios
       .get(myUrl)
       .then((res) => {
-        setmySeries(res.data);
+        myTemp = DateStringArrayToEpoch(res.data);
+
+        myTemp = ArrayOfObjectsToArrayOfArrays(myTemp);
+        console.log(myTemp);
+        setmySeries(myTemp);
+        console.log(mySeries);
       })
       .catch((err) => {
         console.log(err);
@@ -73,10 +79,8 @@ export default function Main1() {
   useEffect(() => {
     getmySeries();
   }, []);
-  var mySeriesJson = JSON.stringify(mySeries);
-  mySeries = DateStringArrayToEpoch(mySeries);
 
-  mySeries = ArrayOfObjectsToArrayOfArrays(mySeries);
+  //  var mySeriesJson = JSON.stringify(mySeries);
 
   const myOptins = {
     //Highcharts.stockChart('container', {
@@ -100,9 +104,6 @@ export default function Main1() {
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  const download2 = (e) => {
-    download("data.json", mySeriesJson.toString());
-  };
 
   //const countries = [...new Set(data.map((item) => item.country))];
   return (
@@ -115,7 +116,6 @@ export default function Main1() {
 
       <Row>
         <Col className="leftColumn" xs={4} style={{ backgroundColor: "gray" }}>
-          <p></p>
           <CreateURL
             changingUrl={changingUrl}
             handleRefreshparent={handleRefreshparent}
@@ -124,31 +124,9 @@ export default function Main1() {
 
         <Col className="maincolumn" style={{}}>
           <>
-            <Row>
-              <Col>
-                <div style={{ color: "white" }}>Quantity </div>
-              </Col>
-              <Col>
-                <div style={{ color: "white" }}>Country</div>
-              </Col>
-              <Col>
-                <div style={{ color: "white" }}>Param2</div>
-              </Col>
-            </Row>
             <div>
-              <HighchartsReact highcharts={Highcharts} options={myOptins} />
+              <TheHighs changingUrl={changingUrl} />
             </div>
-
-            <p style={{ textAlign: "left" }}>Latest Update dd.mm.hh.mm</p>
-
-            <Row>
-              <Col>
-                <Button>Download Image</Button>
-              </Col>
-              <Col>
-                <Button onClick={download2}>Download Data</Button>
-              </Col>
-            </Row>
           </>
           <div
             style={{
