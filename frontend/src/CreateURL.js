@@ -213,6 +213,11 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
         Refresh
       </button>
       <p>{changingUrl}</p>
+      <p>
+        Unfortunately we were not able to pass the new parameters to highcharts
+        but we have everything else working great. For that reason we are
+        showing one instance of each type on the right.{" "}
+      </p>
     </div>
   );
 }

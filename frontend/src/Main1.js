@@ -53,7 +53,26 @@ export default function Main1() {
           <>
             <div>
               <TheHighs
-                changingUrl={changingUrl}
+                changingUrl="http://localhost:3001/2022-01-01&GRCTY"
+                parentQuantity={parentQuantity}
+                parentCountry={parentCountry}
+                parentCountry2={parentCountry2}
+                parentType={parentType}
+              />
+            </div>
+
+            <div>
+              <TheHighs
+                changingUrl="http://localhost:3002/2022-01-01&ITCTY&FossilGas"
+                parentQuantity={parentQuantity}
+                parentCountry={parentCountry}
+                parentCountry2={parentCountry2}
+                parentType={parentType}
+              />
+            </div>
+            <div>
+              <TheHighs
+                changingUrl="http://localhost:3003/2022-01-01&ITCTY&GRCTY"
                 parentQuantity={parentQuantity}
                 parentCountry={parentCountry}
                 parentCountry2={parentCountry2}

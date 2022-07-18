@@ -1,4 +1,4 @@
-GET http://localhost:3001/2022-01-01&ALCTY
+GET http://localhost:3001/2022-01-01&GRCTY
 
 ###
 

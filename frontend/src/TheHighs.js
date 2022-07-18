@@ -75,7 +75,6 @@ function TheHighs({
   return (
     <div className="App">
       <Row>
-        <p>changing url {CreateAgainUrl(changingUrl)}</p>
         <Col>
           <div style={{ color: "white" }}>{parentCountry} </div>
         </Col>
@@ -99,6 +98,7 @@ function TheHighs({
             </>
           )}
         </Col>
+        <Col>Here We Can See The Params</Col>
       </Row>
       <div>
         <HighchartsReact highcharts={Highcharts} options={myOptins} />
