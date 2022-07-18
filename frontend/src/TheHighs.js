@@ -5,7 +5,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 const myGlobalClockURL = "http://localhost:3020/";
-function TheHighs({ changingUrl }) {
+
+function TheHighs({
+  changingUrl,
+  parentQuantity,
+  parentCountry,
+  parentType,
+  parentCountry2,
+}) {
   const [counter, setCounter] = useState([]);
   console.log(changingUrl);
   let myTemp = [];
@@ -68,13 +75,27 @@ function TheHighs({ changingUrl }) {
     <div className="App">
       <Row>
         <Col>
-          <div style={{ color: "white" }}>Quantity </div>
+          <div style={{ color: "white" }}>{parentCountry} </div>
         </Col>
         <Col>
-          <div style={{ color: "white" }}>Country</div>
+          <div style={{ color: "white" }}>{parentQuantity}</div>
         </Col>
         <Col>
-          <div style={{ color: "white" }}>Param2</div>
+          {parentQuantity === "Actual Total Load" ? (
+            <></>
+          ) : (
+            <>
+              {parentQuantity === "Physical Flows" ? (
+                <>
+                  <div style={{ color: "white" }}>{parentType}</div>
+                </>
+              ) : (
+                <>
+                  <div style={{ color: "white" }}>{parentCountry2}</div>
+                </>
+              )}
+            </>
+          )}
         </Col>
       </Row>
       <div>

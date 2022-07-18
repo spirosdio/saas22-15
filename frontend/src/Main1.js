@@ -48,11 +48,19 @@ export default function Main1() {
   const [changingUrl, setChangingUrl] = useState(
     "http://localhost:3001/2022-01-01&ALCTY"
   );
+  const [parentQuantity, setParentQuantity] = useState("");
+  const [parentCountry, setParentCountry] = useState("");
+  const [parentCountry2, setParentCountry2] = useState("");
+  const [parentType, setParentType] = useState("");
 
-  const handleRefreshparent = (newUrl) => {
+  const handleRefreshparent = (newUrl, quantity, country, type, country2) => {
     const url = newUrl;
     setChangingUrl(url);
     console.log(changingUrl);
+    setParentQuantity(quantity);
+    setParentCountry(country);
+    setParentCountry2(type);
+    setParentType(country2);
   };
 
   var [mySeries, setmySeries] = useState([]);
@@ -105,7 +113,6 @@ export default function Main1() {
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  //const countries = [...new Set(data.map((item) => item.country))];
   return (
     <Container style={{}}>
       <Row>
@@ -125,7 +132,13 @@ export default function Main1() {
         <Col className="maincolumn" style={{}}>
           <>
             <div>
-              <TheHighs changingUrl={changingUrl} />
+              <TheHighs
+                changingUrl={changingUrl}
+                parentQuantity={parentQuantity}
+                parentCountry={parentCountry}
+                parentCountry2={parentCountry2}
+                parentType={parentType}
+              />
             </div>
           </>
           <div

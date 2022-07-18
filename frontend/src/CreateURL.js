@@ -204,7 +204,7 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
             }
           }
 
-          handleRefreshparent(changingUrl);
+          handleRefreshparent(changingUrl, quantity, country, type, country2);
         }}
       >
         Refresh
