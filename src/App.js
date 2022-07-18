@@ -8,7 +8,15 @@ import { useState } from "react";
 const ATL = "Actual Total Load";
 const AGPT = "Aggregate Generation per Type";
 const PF = "Physical Flows";
-
+const quantities = [ATL, AGPT, PF];
+const CountriesObject = {
+  Bulgaria: "BGCTY",
+  Greece: "GRCTY",
+  Italy: "ITCTY",
+  "North Macedonia": "MKCTY",
+  Turkey: "TRCTY",
+};
+const countries = ["Bulgaria", "Greece", "Italy", "North Macedonia", "Turkey"];
 const Ports = {
   "Actual Total Load": "3001",
   "Aggregate Generation per Type": "3002",
@@ -120,7 +128,7 @@ function App() {
       "/" +
       myDateString +
       "&" +
-      myCountry;
+      CountriesObject[myCountry];
     setMyUrl(tempUrl);
   };
   return (
@@ -128,34 +136,41 @@ function App() {
       <header className="App-header">
         <p>hello</p>
         <MyChart configObj={configObj} />
-        <label>URL now is {myDateString}</label>
+        <label>date now is {myDateString}</label>
+        insert MM-DD-YYYY or click little callendar
         <input
-          type="text"
-          placeholder="enter datefrom"
+          type={"date"}
+          defaultValue={"2022-01-01"}
           onChange={(event) => {
-            setMyDateString(event.target.value);
-            console.log(event.target.value);
+            setMyDateString(event.target.value.slice(0, 10));
           }}
         ></input>
-
         <label>quantity now is {Ports[myQuantity]}</label>
-        <input
-          type="text"
-          placeholder="enter quantity"
+        <select
           onChange={(event) => {
             setMyQuantity(event.target.value);
-            console.log(event.target.value);
           }}
-        ></input>
-        <label>country now is {myCountry}</label>
-        <input
-          type="text"
-          placeholder="enter country"
+        >
+          <option value=" " selected></option>
+          {quantities.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+        <label>country code now is {CountriesObject[myCountry]}</label>
+        <select
           onChange={(event) => {
             setMyCountry(event.target.value);
-            console.log(event.target.value);
           }}
-        ></input>
+        >
+          <option value=" " selected></option>
+          {countries.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
         <label>url now is {myUrl}</label>
         <button onClick={getMyUrl}>update URL</button>
         <button onClick={handleClick}>
