@@ -95,7 +95,10 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
     "Turkey",
   ];
   //my countrys end
-
+  const [helper, setHelper] = useState(false);
+  function forceUpdate() {
+    setHelper(!helper);
+  }
   return (
     <div className="App">
       <>
@@ -203,12 +206,13 @@ function CreateURL({ changingUrlparent, handleRefreshparent }) {
               );
             }
           }
-
+          forceUpdate();
           handleRefreshparent(changingUrl, quantity, country, type, country2);
         }}
       >
         Refresh
       </button>
+      <p>{changingUrl}</p>
     </div>
   );
 }

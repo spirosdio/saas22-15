@@ -21,15 +21,18 @@ export default function Main1() {
   const [parentType, setParentType] = useState("");
 
   const handleRefreshparent = (newUrl, quantity, country, type, country2) => {
-    setChangingUrl(newUrl);
+    const newUrl2 = newUrl;
+    setChangingUrl(newUrl2);
     setParentQuantity(quantity);
     setParentCountry(country);
     setParentCountry2(type);
     setParentType(country2);
-
-    console.log("this is handle refrech parent", changingUrl);
+    forceUpdate();
   };
-
+  const [helper, setHelper] = useState(false);
+  function forceUpdate() {
+    setHelper(!helper);
+  }
   return (
     <Container style={{}}>
       <Row>

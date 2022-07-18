@@ -14,19 +14,18 @@ function TheHighs({
   parentCountry2,
 }) {
   const [counter, setCounter] = useState([]);
-  console.log(changingUrl);
+
   let myTemp = [];
   const [myOptins, setMyOptins] = useState({});
   const doTheDDOS = process.env.MAGIC_CLOCK_INTERVAL * 1000;
+
   useEffect(() => {
     const interval = setInterval(() => {
       axios
-        .get(changingUrl)
+        .get(CreateAgainUrl(changingUrl))
         .then((res) => {
           myTemp = DateStringArrayToEpoch(res.data);
           myTemp = ArrayOfObjectsToArrayOfArrays(myTemp);
-          console.log(myTemp);
-          console.log(changingUrl);
 
           setMyOptins({
             //Highcharts.stockChart('container', {
@@ -58,7 +57,6 @@ function TheHighs({
         .get(myGlobalClockURL)
         .then((res) => {
           setCounter(res.data.date);
-          console.log(counter);
         })
         .catch((err) => {
           console.log(err);
@@ -77,6 +75,7 @@ function TheHighs({
   return (
     <div className="App">
       <Row>
+        <p>changing url {CreateAgainUrl(changingUrl)}</p>
         <Col>
           <div style={{ color: "white" }}>{parentCountry} </div>
         </Col>
@@ -150,4 +149,9 @@ function ArrayOfObjectsToArrayOfArrays(myJson) {
     myJsonArray.push([myJson[i].DateTime, myJson[i].TotalLoadValue]);
   }
   return myJsonArray;
+}
+
+function CreateAgainUrl(myUrl) {
+  let myNewUrl = myUrl.replace("http://", "http://");
+  return myNewUrl;
 }
