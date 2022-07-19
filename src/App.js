@@ -2,9 +2,11 @@ import "./App.css";
 import MyChart from "./MyChart";
 import React from "react";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //////////////   my constants to be variables from avar////////////////////////////////////////////////////////////////
+
+const myTimeUrl = "http://localhost:3020";
 const ATL = "Actual Total Load";
 const AGPT = "Aggregate Generation per Type";
 const PF = "Physical Flows";
@@ -135,13 +137,40 @@ function App() {
   const [myCountry, setMyCountry] = useState("GRCTY");
   const [myCountry2, setMyCountry2] = useState("GRCTY");
   const [myType, setMyType] = useState("Waste");
-  const getmySeries = () => {
+  const [myTime, setMyTime] = useState(" no time yet");
+
+  const getMyTime = () => {
+    axios
+      .get(myTimeUrl)
+      .then((res) => {
+        setMyTime(res.data.date);
+        console.log("my time is: " + (Date.now() % 100000));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getMyTime();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    getMySeries();
+  }, [myTime]);
+
+  const getMySeries = () => {
     axios
       .get(myUrl)
       .then((res) => {
         let temp = DateStringArrayToEpoch(res.data);
         temp = ArrayOfObjectsToArrayOfArrays(temp, ATL);
-
+        console.log("my series changed at", Date.now() % 10000);
         setMySeries(temp);
       })
       .catch((err) => {
@@ -151,17 +180,12 @@ function App() {
         let tempConfig = { ...configObj };
         tempConfig.series = [{ name: ATL, data: mySeries }];
         setConfigObj(tempConfig);
-
-        console.log(
-          "You can see here that it seys undefined i don't know why banana",
-          configObj.series.data
-        );
       });
   };
   const handleClick = async () => {
     let newObj = { ...configObj };
 
-    let myDataArray = getmySeries();
+    let myDataArray = getMySeries();
 
     newObj.series[0].data = myDataArray;
     setConfigObj(newObj);
@@ -209,6 +233,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>hello</p>
+        <p>welcome human , time is {myTime}:00</p>
+        <button onClick={getMyTime}>get the tiem from the cloud</button>
         <MyChart configObj={configObj} />
         <label>date now is {myDateString}</label>
         insert MM-DD-YYYY or click little callendar
