@@ -66,6 +66,7 @@ function TheHighs({
 
     return () => clearInterval(interval);
   }, []);
+
   const download2 = (e) => {
     download("data.json", myTemp.toString());
   };
@@ -151,22 +152,21 @@ function ArrayOfObjectsToArrayOfArrays(myJson, parentQuantity) {
     "Aggregate Generation per Type": "ActualGenerationOutput",
     "Physical Flows": "FlowValue",
   };
-  if (parentQuantity === "Actual Total Load") {
-    for (let i = 0; i < myJson.length; i++) {
-      myJsonArray.push([myJson[i].DateTime, myJson[i].TotalLoadValue]);
-    }
-  }
   if (parentQuantity === "Aggregate Generation per Type") {
     for (let i = 0; i < myJson.length; i++) {
       myJsonArray.push([myJson[i].DateTime, myJson[i].ActualGenerationOutput]);
     }
-  }
+  }else{
   if (parentQuantity === "Physical Flows") {
     for (let i = 0; i < myJson.length; i++) {
       myJsonArray.push([myJson[i].DateTime, myJson[i].FlowValue]);
     }
+  }else {
+    for (let i = 0; i < myJson.length; i++) {
+      myJsonArray.push([myJson[i].DateTime, myJson[i].TotalLoadValue]);
+    }
   }
-
+  }
   return myJsonArray;
 }
 
