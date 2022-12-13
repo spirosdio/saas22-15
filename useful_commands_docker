@@ -1,0 +1,8 @@
+# CREATE TOPIC
+docker exec -it kafka /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic test --partitions 1 --replication-factor 1
+
+# CHANGE CONFIGURATION OF TOPIC TO HANDLE LARGE MESSAGES
+docker exec -it kafka /opt/bitnami/kafka/bin/kafka-configs.sh --bootstrap-server localhost:9092 --alter --entity-type topics --entity-name test --add-config max.message.bytes=104857600
+
+# LIST TOPICS
+docker exec -it kafka /opt/bitnami/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
